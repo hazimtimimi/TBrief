@@ -1,0 +1,22 @@
+/* Styles for specific elements and classes */
+
+/* bolded numbers */
+#notifs_women, #notifs_men, #notifs_kids, #deaths_nh, #deaths_h, #alc, #dia, #hiv, #smk, #und {
+  font-size:130%;
+  font-weight:bold;
+  float:left;
+  margin-right: 10px;
+  width:80px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* named rows */
+#tb_cascade, #tb_prevention, #drtbhiv_cascade, #tb_finance {
+  border-bottom: 0.25px solid #a2cfde;
+}
+
+
+#generation {
+  margin-top: 10px;
+}
