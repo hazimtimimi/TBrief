@@ -21,6 +21,9 @@ The app pulls data directly from the global TB database:
 
 5. https://extranet.who.int/tme/generateJSON.asp?ds=group_data&group_code=XXX (where XXX is a code for a WHO region or the global group). This returns all the data that appear in the tables and charts for the group of countries and areas.
 
+## Icons
+
+Thanks to [Health icons](https://healthicons.org/)!
 
 ## Data updates
 

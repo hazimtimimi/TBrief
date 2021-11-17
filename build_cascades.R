@@ -30,7 +30,9 @@ output$tb_cascade_chart <-  renderPlot({
              x=1,
              y=incidence/2,
              size=8,
-             label = paste0(int_spacer(incidence), "\nfell ill\nwith TB\n(2020)")) +
+             label = paste0(int_spacer(incidence),
+                            relatable_num(incidence),
+                            "\nfell ill\nwith TB\nin 2020")) +
 
     annotate("text",
              x=2,
@@ -39,8 +41,10 @@ output$tb_cascade_chart <-  renderPlot({
                          8,
                          6),
              label = ifelse(!is.na(notified),
-                            paste0(int_spacer(notified), "\nnotified\nwith TB\n(2020)"),
-                            "notified\nwith TB\n(2020)\nnot\navailable"
+                            paste0(int_spacer(notified),
+                                   relatable_num(notified),
+                                   "\nnotified\nwith TB\nin 2020"),
+                            "notified\nwith TB\nin 2020\nnot\navailable"
              )
     ) +
 
@@ -51,8 +55,8 @@ output$tb_cascade_chart <-  renderPlot({
                          8,
                          6),
              label = ifelse(!is.na(success_pct),
-                            paste0(success_pct, "%\nsuccessfully\ntreated\n(2019)"),
-                            "%\nsuccessfully\ntreated\n(2019)\nnot\navailable")
+                            paste0(success_pct, "%\nsuccessfully\ntreated\nin 2019"),
+                            "%\nsuccessfully\ntreated\nin 2019\nnot\navailable")
     ) +
 
     # Remove all axes, legends etc
@@ -88,7 +92,7 @@ output$tbhiv_cascade_chart <-  renderPlot({
              x=1,
              y=incidence/2,
              size=8,
-             label = paste0(int_spacer(incidence), "\nfell ill\nwith TB\n(2020)")) +
+             label = paste0(int_spacer(incidence), "\nfell ill\nwith TB\nin 2020")) +
 
     annotate("text",
              x=2,
@@ -97,8 +101,8 @@ output$tbhiv_cascade_chart <-  renderPlot({
                          8,
                          6),
              label = ifelse(!is.na(notified),
-                            paste0(int_spacer(notified), "\nnotified\nwith TB\n(2020)"),
-                            "notified\nwith TB\n(2020)\nnot\navailable"
+                            paste0(int_spacer(notified), "\nnotified\nwith TB\nin 2020"),
+                            "notified\nwith TB\nin 2020\nnot\navailable"
              )
     ) +
 
@@ -109,8 +113,8 @@ output$tbhiv_cascade_chart <-  renderPlot({
                          8,
                          6),
              label = ifelse(!is.na(success_pct),
-                            paste0(success_pct, "%\nsuccessfully\ntreated\n(2019)"),
-                            "%\nsuccessfully\ntreated\n(2019)\nnot\navailable")
+                            paste0(success_pct, "%\nsuccessfully\ntreated\nin 2019"),
+                            "%\nsuccessfully\ntreated\nin 2019\nnot\navailable")
     ) +
 
     # Remove all axes, legends etc
@@ -147,7 +151,7 @@ output$drtb_cascade_chart <-  renderPlot({
              x=1,
              y=detected/2,
              size=8,
-             label = paste0(int_spacer(detected), "\ndetected\n(2020)")) +
+             label = paste0(int_spacer(detected), "\ndetected\nin 2020")) +
 
     annotate("text",
              x=2,
@@ -156,8 +160,8 @@ output$drtb_cascade_chart <-  renderPlot({
                          8,
                          6),
              label = ifelse(!is.na(enrolled),
-                            paste0(int_spacer(enrolled), "\nstarted\ntreatment\n(2020)"),
-                            "started\ntreatment\n(2020)\nnot\navailable"
+                            paste0(int_spacer(enrolled), "\nstarted\ntreatment\nin 2020"),
+                            "started\ntreatment\nin 2020\nnot\navailable"
              )
     ) +
 
@@ -168,8 +172,8 @@ output$drtb_cascade_chart <-  renderPlot({
                          8,
                          6),
              label = ifelse(!is.na(success_pct),
-                            paste0(success_pct, "%\nsuccessfully\ntreated\n(2018)"),
-                            "%\nsuccessfully\ntreated\n(2018)\nnot\navailable")
+                            paste0(success_pct, "%\nsuccessfully\ntreated\nin 2018"),
+                            "%\nsuccessfully\ntreated\nin 2018\nnot\navailable")
     ) +
 
     # Remove all axes, legends etc

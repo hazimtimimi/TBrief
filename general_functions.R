@@ -30,26 +30,24 @@ ftb_na <- function(x, fn=gtbreport::ftb) {
          )
 }
 
+# Convert an annual number to number per day
+relatable_num <- function(x){
+  ifelse(length(x)==0,
+         "",
+         ifelse(is.na(x),
+                "",
+                ifelse(x>=365*24*60,
+                       paste0("\n(one every\n", round(365*24*60*60/x), " seconds)"),
+                       ifelse(x>=365*24,
+                              paste0("\n(one every\n", round(365*24*60/x), " minutes)"),
+                              ifelse(x>=365,
+                                     paste0("\n(one every\n", round(8760/x), " hours)"),
+                                     paste0("\n(one every\n", round(365/x), " days)")
+                                     )
+                              )
+                       )
+                )
+         )
 
-# Calculate % using numerator and denominator, format the output and cap at 100%
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-display_cap_pct <- function(numerator, denominator) {
-
-  pct <- ifelse(is.na(numerator) | is.na(denominator) | denominator == 0, "",
-         ifelse(numerator > denominator, ">100%", paste0(signif(numerator * 100 / denominator, 2), "%")))
-
-  return(pct)
-}
-
-# Calculate % using numerator and denominator, cap at 100, no formating
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-get_cap_pct <- function(numerator, denominator) {
-
-  pct <- ifelse(is.na(numerator) | is.na(denominator) | denominator == 0, "",
-         ifelse(numerator > denominator, 100, signif(numerator * 100 / denominator, 2)))
-
-  return(pct)
 }
 

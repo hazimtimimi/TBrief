@@ -1,10 +1,10 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Display TB country and group (regional/global) summary data on TB using JSON data
 # retrieved from the WHO global tuberculosis database
-# Hazim Timimi, October 2021
+# Hazim Timimi, November 2021
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 0.1"
+app_version <- "Version 0.2"
 
 library(shiny)
 library(jsonlite)
@@ -62,7 +62,7 @@ ui <- function(request) {
                    column(width = 2,
                           tags$div(class = "navbar navbar-inverse",
                                    style = "padding-left: 20px;
-                                            background-image: url('gtbr_pattern.png');",
+                                            background-color: #a2cfde;",
 
                                    uiOutput(outputId = "entitytypes")
 
@@ -92,7 +92,13 @@ ui <- function(request) {
                 fixedRow(id="tb_cascade",
                     column(width = 6,
                            HTML("<h3>People with TB</h3>"),
-                           plotOutput(outputId = "tb_cascade_chart", height = "300px")
+
+                           fixedRow(
+                               column(width = 2,
+                                      HTML("<img src='tb@2x.png'>")),
+                               column(width = 10,
+                                      plotOutput(outputId = "tb_cascade_chart", height = "300px"))
+                           ),
                     ),
                     column(width = 6,
 
@@ -100,7 +106,7 @@ ui <- function(request) {
 
                            fixedRow(
                                column(width = 2,
-                                      HTML("<img src='people-silhouette.png' width='70' height='70'>")
+                                      HTML("<img src='people@2x.png'>")
                                ),
                                column(width = 10,
                                       textOutput(outputId = "notifs_kids",
@@ -119,7 +125,7 @@ ui <- function(request) {
 
                            fixedRow(
                                column(width = 2,
-                                      HTML("<img src='illness-on-bed.png' width='70' height='70'>")),
+                                      HTML("<img src='death@2x.png'>")),
                                column(width = 10,
                                       textOutput(outputId = "deaths_nh",
                                                  inline = TRUE),
@@ -134,48 +140,115 @@ ui <- function(request) {
 
                 fixedRow(id="tb_prevention",
                     column(width = 6,
-                           HTML("<h3>People falling ill with TB in 2020</h3>"),
-                           textOutput(outputId = "alc",
-                                      inline = TRUE),
-                           HTML("due to harmful use of alcohol<br /><br />"),
-                           textOutput(outputId = "dia",
-                                      inline = TRUE),
-                           HTML("due to diabetes<br /><br />"),
-                           textOutput(outputId = "hiv",
-                                      inline = TRUE),
-                           HTML("due to HIV<br /><br />"),
-                           textOutput(outputId = "smk",
-                                      inline = TRUE),
-                           HTML("due to smoking<br /><br />"),
-                           textOutput(outputId = "und",
-                                      inline = TRUE),
-                           HTML("due to undernourishment")
-                    ),
+                           HTML("<h3>Causes of people falling ill with TB in 2020</h3>"),
+
+                           fixedRow(
+                               column(width = 2,
+                                       HTML("<img src='alert_triangle@2x.png'>")),
+                               column(width = 10,
+                                      textOutput(outputId = "alc",
+                                                 inline = TRUE),
+                                      HTML("due to harmful use of alcohol<br /><br />"),
+                                      textOutput(outputId = "dia",
+                                                 inline = TRUE),
+                                      HTML("due to diabetes<br /><br />"),
+                                      textOutput(outputId = "hiv",
+                                                 inline = TRUE),
+                                      HTML("due to HIV<br /><br />"),
+                                      textOutput(outputId = "smk",
+                                                 inline = TRUE),
+                                      HTML("due to smoking<br /><br />"),
+                                      textOutput(outputId = "und",
+                                                 inline = TRUE),
+                                      HTML("due to undernourishment")
+                                      )
+                               )
+                           ),
 
                     column(width = 6,
-                           HTML("<h3>TPT goes here</h3>")
-                    )
+                           HTML("<h3>Treatment to prevent TB provided in 2020</h3>"),
 
+                           fixedRow(
+                               column(width = 2,
+                                      HTML("<img src='medicines@2x.png'>")),
+                               column(width = 10,
+                                      textOutput(outputId = "hiv_tpt",
+                                                 inline = TRUE),
+                                      HTML("people living with HIV<br /><br />"),
+                                      textOutput(outputId = "contacts_04_tpt",
+                                                 inline = TRUE),
+                                      HTML("household contacts (aged 0-4 years) of people with TB<br /><br />"),
+                                      textOutput(outputId = "contacts_5plus_tpt",
+                                                 inline = TRUE),
+                                      HTML("household contacts (aged 5 years and above) of people with TB")
+                               )
+                           )
+
+                    )
                 ),
+
                 fixedRow(id="drtbhiv_cascade",
                     column(width = 6,
                            HTML("<h3>People living with HIV</h3>"),
-                           plotOutput(outputId = "tbhiv_cascade_chart", height = "300px")
-                    ),
+
+                           fixedRow(
+                               column(width = 2,
+                                      HTML("<img src='ribbon@2x.png'>")),
+                               column(width = 10,
+                                      plotOutput(outputId = "tbhiv_cascade_chart", height = "300px"))
+                               ),
+                           ),
 
                     column(width = 6,
                            HTML("<h3>People with drug-resistant TB</h3>"),
-                           plotOutput(outputId = "drtb_cascade_chart", height = "300px")
-                    )
 
+                           fixedRow(
+                               column(width = 2,
+                                      HTML("<img src='clinical_a@2x.png'>")),
+                               column(width = 10,
+                                      plotOutput(outputId = "drtb_cascade_chart", height = "300px"))
+                               ),
+                           )
                 ),
+
                 fixedRow(id="tb_finance",
                     column(width = 6,
-                           HTML("<h3>Budget goes here</h3>")
+                           HTML("<h3>National TB programme budget for 2021</h3>"),
+
+                           fixedRow(
+                               column(width = 2,
+                                      HTML("<img src='coins@2x.png'>")),
+                               column(width = 10,
+                                      textOutput(outputId = "tot_req",
+                                                 inline = TRUE),
+                                      HTML("million US$ required<br /><br />"),
+                                      textOutput(outputId = "tot_domestic",
+                                                 inline = TRUE),
+                                      HTML("million US$ available from domestic funds<br /><br />"),
+                                      textOutput(outputId = "tot_international",
+                                                 inline = TRUE),
+                                      HTML("million US$ available from international funds<br /><br />"),
+                                      textOutput(outputId = "tot_gap",
+                                                 inline = TRUE),
+                                      HTML("million US$ funding gap<br /><br />")
+                               )
+                           )
                     ),
 
                     column(width = 6,
-                           HTML("<h3>Catastrophic costs goes here</h3>")
+                           HTML("<h3>Survey of TB patient costs</h3>"),
+
+                           fixedRow(
+                               column(width = 2,
+                                      HTML("<img src='health_worker_form@2x.png'>")),
+                               column(width = 10,
+                                      textOutput(outputId = "catast",
+                                                 inline = TRUE),
+                                      textOutput(outputId = "catast_description",
+                                                 inline = TRUE)
+
+                               )
+                           )
                     )
 
                 ),
