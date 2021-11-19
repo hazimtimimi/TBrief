@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 0.2"
+app_version <- "Version 0.3"
 
 library(shiny)
 library(jsonlite)
@@ -97,9 +97,91 @@ ui <- function(request) {
                                column(width = 2,
                                       HTML("<img src='tb@2x.png'>")),
                                column(width = 10,
-                                      plotOutput(outputId = "tb_cascade_chart", height = "300px"))
+
+                                      tags$div(style = "position: relative;",
+
+                                               plotOutput(outputId = "tb_cascade_chart", height = "140px"),
+
+                                               # Next DIV allows the text to appear over the chart image
+                                               tags$div(style = "position: absolute;
+                                                                 top: 20px;",
+
+                                                        textOutput(outputId = "tb_inc",
+                                                                   inline = TRUE),
+                                                        textOutput(outputId = "tb_inc_txt",
+                                                                   inline = TRUE),
+                                                        HTML("<br /><br />"),
+                                                        textOutput(outputId = "tb_notif",
+                                                                   inline = TRUE),
+                                                        textOutput(outputId = "tb_notif_txt",
+                                                                   inline = TRUE),
+                                                        HTML("notified with TB in 2020<br /><br />"),
+                                                        textOutput(outputId = "tb_tsr_pct",
+                                                                   inline = TRUE),
+                                                        HTML("successfully treated in 2019")
+
+                                                        )
+                                               )
+
+                                      )
                            ),
+
+
+                           HTML("<h3>People who died from TB in 2020</h3>"),
+
+                           fixedRow(
+                               column(width = 2,
+                                      HTML("<img src='death@2x.png'>")),
+                               column(width = 10,
+                                      textOutput(outputId = "deaths_nh",
+                                                 inline = TRUE),
+                                      textOutput(outputId = "deaths_nh_relatable",
+                                                 inline = TRUE),
+                                      HTML("people without HIV<br/><br/>"),
+                                      textOutput(outputId = "deaths_h",
+                                                 inline = TRUE),
+                                      textOutput(outputId = "deaths_h_relatable",
+                                                 inline = TRUE),
+                                      HTML("people living with HIV")
+                               )
+                           )
+
+
+
+
                     ),
+                    column(width = 6,
+
+
+                           HTML("<h3>Causes of people falling ill with TB in 2020</h3>"),
+
+                           fixedRow(
+                               column(width = 2,
+                                      HTML("<img src='question@2x.png'>")),
+                               column(width = 10,
+                                      HTML("<br/>"),
+                                      textOutput(outputId = "alc",
+                                                 inline = TRUE),
+                                      HTML("due to harmful use of alcohol<br /><br />"),
+                                      textOutput(outputId = "dia",
+                                                 inline = TRUE),
+                                      HTML("due to diabetes<br /><br />"),
+                                      textOutput(outputId = "hiv",
+                                                 inline = TRUE),
+                                      HTML("due to HIV<br /><br />"),
+                                      textOutput(outputId = "smk",
+                                                 inline = TRUE),
+                                      HTML("due to smoking<br /><br />"),
+                                      textOutput(outputId = "und",
+                                                 inline = TRUE),
+                                      HTML("due to undernourishment")
+                               )
+                           )
+                    ),
+
+                ),
+
+                fixedRow(id="tb_prevention",
                     column(width = 6,
 
                            HTML("<h3>People notified with TB in 2020</h3>"),
@@ -119,50 +201,7 @@ ui <- function(request) {
                                                  inline = TRUE),
                                       HTML("men aged 15 years and over<br /><br />")
                                )
-                           ),
-
-                           HTML("<h3>People who died from TB in 2020</h3>"),
-
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='death@2x.png'>")),
-                               column(width = 10,
-                                      textOutput(outputId = "deaths_nh",
-                                                 inline = TRUE),
-                                      HTML("people without HIV<br/><br/>"),
-                                      textOutput(outputId = "deaths_h",
-                                                 inline = TRUE),
-                                      HTML("people with HIV")
-                               )
                            )
-                    )
-                ),
-
-                fixedRow(id="tb_prevention",
-                    column(width = 6,
-                           HTML("<h3>Causes of people falling ill with TB in 2020</h3>"),
-
-                           fixedRow(
-                               column(width = 2,
-                                       HTML("<img src='alert_triangle@2x.png'>")),
-                               column(width = 10,
-                                      textOutput(outputId = "alc",
-                                                 inline = TRUE),
-                                      HTML("due to harmful use of alcohol<br /><br />"),
-                                      textOutput(outputId = "dia",
-                                                 inline = TRUE),
-                                      HTML("due to diabetes<br /><br />"),
-                                      textOutput(outputId = "hiv",
-                                                 inline = TRUE),
-                                      HTML("due to HIV<br /><br />"),
-                                      textOutput(outputId = "smk",
-                                                 inline = TRUE),
-                                      HTML("due to smoking<br /><br />"),
-                                      textOutput(outputId = "und",
-                                                 inline = TRUE),
-                                      HTML("due to undernourishment")
-                                      )
-                               )
                            ),
 
                     column(width = 6,
@@ -195,8 +234,30 @@ ui <- function(request) {
                                column(width = 2,
                                       HTML("<img src='ribbon@2x.png'>")),
                                column(width = 10,
-                                      plotOutput(outputId = "tbhiv_cascade_chart", height = "300px"))
-                               ),
+
+                                      tags$div(style = "position: relative;",
+
+                                               plotOutput(outputId = "tbhiv_cascade_chart", height = "140px"),
+
+                                               # Next DIV allows the text to appear over the chart image
+                                               tags$div(style = "position: absolute;
+                                                                 top: 20px;",
+
+                                                        textOutput(outputId = "tbhiv_inc",
+                                                                   inline = TRUE),
+                                                        HTML("fell ill with TB in 2020<br /><br />"),
+                                                        textOutput(outputId = "tbhiv_notif",
+                                                                   inline = TRUE),
+                                                        HTML("notified with TB in 2020<br /><br />"),
+                                                        textOutput(outputId = "tbhiv_tsr_pct",
+                                                                   inline = TRUE),
+                                                        HTML("successfully treated in 2019")
+
+                                               )
+                                      )
+
+                               )
+                           )
                            ),
 
                     column(width = 6,
@@ -206,8 +267,30 @@ ui <- function(request) {
                                column(width = 2,
                                       HTML("<img src='clinical_a@2x.png'>")),
                                column(width = 10,
-                                      plotOutput(outputId = "drtb_cascade_chart", height = "300px"))
-                               ),
+
+                                             tags$div(style = "position: relative;",
+
+                                                      plotOutput(outputId = "drtb_cascade_chart", height = "140px"),
+
+                                                      # Next DIV allows the text to appear over the chart image
+                                                      tags$div(style = "position: absolute;
+                                                                 top: 20px;",
+
+                                                               textOutput(outputId = "drtb_detect",
+                                                                          inline = TRUE),
+                                                               HTML("detected in 2020<br /><br />"),
+                                                               textOutput(outputId = "drtb_enrol",
+                                                                          inline = TRUE),
+                                                               HTML("started treatment in 2020<br /><br />"),
+                                                               textOutput(outputId = "drtb_tsr_pct",
+                                                                          inline = TRUE),
+                                                               HTML("successfully treated in 2018")
+
+                                                      )
+                                             )
+
+                                      )
+                               )
                            )
                 ),
 

@@ -20,44 +20,17 @@ output$tb_cascade_chart <-  renderPlot({
   success_num <- notified * success_pct / 100
 
   # Create dataframe to plot cascade
-  cascade_tb <- data.frame(cat = c("estimated", "notified", "success"),
+  # Prefix numbers to the category names so that they appear in the reverse
+  # vertical order (1 is at the bottom, 2 above it, ..) when axes flipped
+  cascade_tb <- data.frame(cat = c("3_estimated", "2_notified", "1_success"),
                            num = c(incidence, notified, success_num))
 
   cascade_tb %>%
     ggplot(aes(x=cat, y=num)) +
     geom_col(fill="#a2cfde", alpha=0.15) +
-    annotate("text",
-             x=1,
-             y=incidence/2,
-             size=8,
-             label = paste0(int_spacer(incidence),
-                            relatable_num(incidence),
-                            "\nfell ill\nwith TB\nin 2020")) +
 
-    annotate("text",
-             x=2,
-             y=incidence/2,
-             size=ifelse(!is.na(notified),
-                         8,
-                         6),
-             label = ifelse(!is.na(notified),
-                            paste0(int_spacer(notified),
-                                   relatable_num(notified),
-                                   "\nnotified\nwith TB\nin 2020"),
-                            "notified\nwith TB\nin 2020\nnot\navailable"
-             )
-    ) +
-
-    annotate("text",
-             x=3,
-             y=incidence/2,
-             size=ifelse(!is.na(success_pct),
-                         8,
-                         6),
-             label = ifelse(!is.na(success_pct),
-                            paste0(success_pct, "%\nsuccessfully\ntreated\nin 2019"),
-                            "%\nsuccessfully\ntreated\nin 2019\nnot\navailable")
-    ) +
+    # Flip sideways and reverse the order of the bars
+    coord_flip() +
 
     # Remove all axes, legends etc
     theme_void()
@@ -82,40 +55,17 @@ output$tbhiv_cascade_chart <-  renderPlot({
   success_num <- notified * success_pct / 100
 
   # Create dataframe to plot cascade
-  cascade_tb <- data.frame(cat = c("estimated", "notified", "success"),
-                           num = c(incidence, notified, success_num))
+  # Prefix numbers to the category names so that they appear in the reverse
+  # vertical order (1 is at the bottom, 2 above it, ..) when axes flipped
+  cascade_tbhiv <- data.frame(cat = c("3_estimated", "2_notified", "1_success"),
+                              num = c(incidence, notified, success_num))
 
-  cascade_tb %>%
+  cascade_tbhiv %>%
     ggplot(aes(x=cat, y=num)) +
     geom_col(fill="#fc1e1e", alpha=0.08) +
-    annotate("text",
-             x=1,
-             y=incidence/2,
-             size=8,
-             label = paste0(int_spacer(incidence), "\nfell ill\nwith TB\nin 2020")) +
 
-    annotate("text",
-             x=2,
-             y=incidence/2,
-             size=ifelse(!is.na(notified),
-                         8,
-                         6),
-             label = ifelse(!is.na(notified),
-                            paste0(int_spacer(notified), "\nnotified\nwith TB\nin 2020"),
-                            "notified\nwith TB\nin 2020\nnot\navailable"
-             )
-    ) +
-
-    annotate("text",
-             x=3,
-             y=incidence/2,
-             size=ifelse(!is.na(success_pct),
-                         8,
-                         6),
-             label = ifelse(!is.na(success_pct),
-                            paste0(success_pct, "%\nsuccessfully\ntreated\nin 2019"),
-                            "%\nsuccessfully\ntreated\nin 2019\nnot\navailable")
-    ) +
+    # Flip sideways and reverse the order of the bars
+    coord_flip() +
 
     # Remove all axes, legends etc
     theme_void()
@@ -124,7 +74,7 @@ output$tbhiv_cascade_chart <-  renderPlot({
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 2. DR-TB
+# 3. DR-TB
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 output$drtb_cascade_chart <-  renderPlot({
@@ -141,40 +91,17 @@ output$drtb_cascade_chart <-  renderPlot({
   success_num <- enrolled * success_pct / 100
 
   # Create dataframe to plot cascade
-  cascade_tb <- data.frame(cat = c("detected", "enrolled", "success"),
-                           num = c(detected, enrolled, success_num))
+  # Prefix numbers to the category names so that they appear in the reverse
+  # vertical order (1 is at the bottom, 2 above it, ..) when axes flipped
+  cascade_drtb <- data.frame(cat = c("3_detected", "2_enrolled", "1_success"),
+                             num = c(detected, enrolled, success_num))
 
-  cascade_tb %>%
+  cascade_drtb %>%
     ggplot(aes(x=cat, y=num)) +
     geom_col(fill="#f1c70c", alpha=0.08) +
-    annotate("text",
-             x=1,
-             y=detected/2,
-             size=8,
-             label = paste0(int_spacer(detected), "\ndetected\nin 2020")) +
 
-    annotate("text",
-             x=2,
-             y=detected/2,
-             size=ifelse(!is.na(enrolled),
-                         8,
-                         6),
-             label = ifelse(!is.na(enrolled),
-                            paste0(int_spacer(enrolled), "\nstarted\ntreatment\nin 2020"),
-                            "started\ntreatment\nin 2020\nnot\navailable"
-             )
-    ) +
-
-    annotate("text",
-             x=3,
-             y=detected/2,
-             size=ifelse(!is.na(success_pct),
-                         8,
-                         6),
-             label = ifelse(!is.na(success_pct),
-                            paste0(success_pct, "%\nsuccessfully\ntreated\nin 2018"),
-                            "%\nsuccessfully\ntreated\nin 2018\nnot\navailable")
-    ) +
+    # Flip sideways and reverse the order of the bars
+    coord_flip() +
 
     # Remove all axes, legends etc
     theme_void()
