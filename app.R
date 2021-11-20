@@ -36,6 +36,62 @@ aggregate_groups <- aggregate_groups$groups
 # Load general, non-reactive functions
 source("general_functions.R")
 
+# Add a function to create a standard block for the UI with an image in a column of size 2
+# and text in a column of size 10, all within a column that will use up half of fixed row that
+# spans the full width of the web page. The web page will be made up of manny such blocks
+
+block_210 <- function(sub_title, image_name, text_name) {
+
+    column(width = 6,
+
+           HTML(sub_title),
+
+           fixedRow(
+               column(width = 2,
+                      HTML(paste0("<img src='", image_name, "'>"))
+               ),
+               column(width = 10,
+
+                      htmlOutput(outputId = text_name,
+                                 inline = TRUE)
+               )
+           )
+    )
+}
+
+# And a similar block, but now with a cascade of care horizontal bar chart placed in the background
+# with text written over it
+
+block_210_cascade <- function(sub_title, image_name, text_name, plot_name) {
+
+    column(width = 6,
+
+           HTML(sub_title),
+
+           fixedRow(
+               column(width = 2,
+                      HTML(paste0("<img src='", image_name, "'>"))
+               ),
+               column(width = 10,
+
+                      tags$div(style = "position: relative;",
+
+                               plotOutput(outputId = plot_name, height = "140px"),
+
+                               # Next DIV allows the text to appear over the chart image
+                               tags$div(style = "position: absolute; top: 20px;",
+
+                                        htmlOutput(outputId = text_name,
+                                                   inline = TRUE)
+                               )
+                      )
+               )
+           )
+    )
+}
+
+
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Web interface code
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -90,6 +146,7 @@ ui <- function(request) {
                 textOutput(outputId = "population", container = h5),
 
                 fixedRow(id="tb_cascade",
+
                     column(width = 6,
                            HTML("<h3>People with TB</h3>"),
 
@@ -126,138 +183,50 @@ ui <- function(request) {
                                )
                            )
                     ),
-                    column(width = 6,
 
+                    block_210(sub_title = "<h3>Causes of people falling ill with TB in 2020</h3>",
+                              image_name = "question@2x.png",
+                              text_name = "attributable_cases"),
 
-                           HTML("<h3>Causes of people falling ill with TB in 2020</h3>"),
-
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='question@2x.png'>")),
-                               column(width = 10,
-
-                                      htmlOutput(outputId = "attributable_cases",
-                                                 inline = TRUE)
-                               )
-                           )
-                    ),
                 ),
 
                 fixedRow(id="tb_prevention",
-                    column(width = 6,
 
-                           HTML("<h3>People notified with TB in 2020</h3>"),
+                         block_210(sub_title = "<h3>People notified with TB in 2020</h3>",
+                                   image_name = "people@2x.png",
+                                   text_name = "notifs_text"),
 
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='people@2x.png'>")
-                               ),
-                               column(width = 10,
 
-                                      htmlOutput(outputId = "notifs_text",
-                                                 inline = TRUE)
-                               )
-                           )
-                           ),
+                         block_210(sub_title = "<h3>Treatment to prevent TB provided in 2020</h3>",
+                                   image_name = "medicines@2x.png",
+                                   text_name = "tpt_text")
 
-                    column(width = 6,
-                           HTML("<h3>Treatment to prevent TB provided in 2020</h3>"),
-
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='medicines@2x.png'>")),
-                               column(width = 10,
-
-                                      htmlOutput(outputId = "tpt_text",
-                                                 inline = TRUE)
-                               )
-                           )
-                    )
                 ),
 
                 fixedRow(id="drtbhiv_cascade",
-                    column(width = 6,
-                           HTML("<h3>People living with HIV</h3>"),
 
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='ribbon@2x.png'>")),
-                               column(width = 10,
+                         block_210_cascade(sub_title = "<h3>People living with HIV</h3>",
+                                           image_name = "ribbon@2x.png",
+                                           text_name = "tbhiv_cascade_text",
+                                           plot_name = "tbhiv_cascade_chart"),
 
-                                      tags$div(style = "position: relative;",
-
-                                               plotOutput(outputId = "tbhiv_cascade_chart", height = "140px"),
-
-                                               # Next DIV allows the text to appear over the chart image
-                                               tags$div(style = "position: absolute;
-                                                                 top: 20px;",
-
-                                                        htmlOutput(outputId = "tbhiv_cascade_text")
-                                               )
-                                      )
-                               )
-                           )
-                           ),
-
-                    column(width = 6,
-                           HTML("<h3>People with drug-resistant TB</h3>"),
-
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='clinical_a@2x.png'>")),
-                               column(width = 10,
-
-                                             tags$div(style = "position: relative;",
-
-                                                      plotOutput(outputId = "drtb_cascade_chart", height = "140px"),
-
-                                                      # Next DIV allows the text to appear over the chart image
-                                                      tags$div(style = "position: absolute;
-                                                                 top: 20px;",
-
-                                                               htmlOutput(outputId = "drtb_cascade_text")
-                                                      )
-                                             )
-                                      )
-                               )
-                           )
+                         block_210_cascade(sub_title = "<h3>People with drug-resistant TB</h3>",
+                                           image_name = "clinical_a@2x.png",
+                                           text_name = "drtb_cascade_text",
+                                           plot_name = "drtb_cascade_chart")
                 ),
 
                 fixedRow(id="tb_finance",
-                    column(width = 6,
-                           HTML("<h3>National TB programme budget for 2021</h3>"),
 
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='coins@2x.png'>")),
-                               column(width = 10,
+                         block_210(sub_title = "<h3>National TB programme budget for 2021</h3>",
+                                   image_name = "coins@2x.png",
+                                   text_name = "finance_text"),
 
-                                      htmlOutput(outputId = "finance_text",
-                                                 inline = TRUE)
-                               )
-                           )
-                    ),
-
-                    column(width = 6,
-                           HTML("<h3>Survey of TB patient costs</h3>"),
-
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='health_worker_form@2x.png'>")),
-                               column(width = 10,
-
-                                      htmlOutput(outputId = "pcs_text",
-                                                 inline = TRUE)
-
-                                      # textOutput(outputId = "catast",
-                                      #            inline = TRUE),
-                                      # textOutput(outputId = "catast_description",
-                                      #            inline = TRUE)
-
-                               )
-                           )
-                    )
+                         block_210(sub_title = "<h3>Survey of TB patient costs</h3>",
+                                   image_name = "health_worker_form@2x.png",
+                                   text_name = "pcs_text")
                 ),
+
                 # Footer that goes on every page
                 htmlOutput(outputId = "generation"),
 
