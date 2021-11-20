@@ -1,16 +1,17 @@
 /* Styles for specific elements and classes */
 
-/* bolded numbers */
-#tb_inc, #tb_notif, #tb_tsr_pct, #notifs_women, #notifs_men, #notifs_kids, #deaths_nh, #deaths_h, #alc, #dia, #hiv, #smk, #und, #hiv_tpt, #contacts_04_tpt, #contacts_5plus_tpt, #tbhiv_inc, #tbhiv_notif, #tbhiv_tsr_pct, #drtb_detect, #drtb_enrol, #drtb_tsr_pct, #tot_req, #tot_domestic, #tot_international, #tot_gap, #catast {
-  font-size:130%;
-  font-weight:bold;
-  float:left;
+/* Statistics as bolded numbers */
+.stats {
+  font-size: 130%;
+  font-weight: bold;
+  float: left;
   margin-right: 10px;
   margin-left: 20px;
-  width:80px;
+  width: 80px;
   text-align: right;
   white-space: nowrap;
 }
+
 
 /* named rows */
 #tb_cascade, #tb_prevention, #drtbhiv_cascade, #tb_finance {

@@ -106,23 +106,10 @@ ui <- function(request) {
                                                tags$div(style = "position: absolute;
                                                                  top: 20px;",
 
-                                                        textOutput(outputId = "tb_inc",
-                                                                   inline = TRUE),
-                                                        textOutput(outputId = "tb_inc_txt",
-                                                                   inline = TRUE),
-                                                        HTML("<br /><br />"),
-                                                        textOutput(outputId = "tb_notif",
-                                                                   inline = TRUE),
-                                                        textOutput(outputId = "tb_notif_txt",
-                                                                   inline = TRUE),
-                                                        HTML("notified with TB in 2020<br /><br />"),
-                                                        textOutput(outputId = "tb_tsr_pct",
-                                                                   inline = TRUE),
-                                                        HTML("successfully treated in 2019")
-
+                                                        htmlOutput(outputId = "tb_cascade_text",
+                                                                   inline = TRUE)
                                                         )
                                                )
-
                                       )
                            ),
 
@@ -133,22 +120,11 @@ ui <- function(request) {
                                column(width = 2,
                                       HTML("<img src='death@2x.png'>")),
                                column(width = 10,
-                                      textOutput(outputId = "deaths_nh",
-                                                 inline = TRUE),
-                                      textOutput(outputId = "deaths_nh_relatable",
-                                                 inline = TRUE),
-                                      HTML("people without HIV<br/><br/>"),
-                                      textOutput(outputId = "deaths_h",
-                                                 inline = TRUE),
-                                      textOutput(outputId = "deaths_h_relatable",
-                                                 inline = TRUE),
-                                      HTML("people living with HIV")
+
+                                      htmlOutput(outputId = "deaths_text",
+                                                 inline = TRUE)
                                )
                            )
-
-
-
-
                     ),
                     column(width = 6,
 
@@ -159,26 +135,12 @@ ui <- function(request) {
                                column(width = 2,
                                       HTML("<img src='question@2x.png'>")),
                                column(width = 10,
-                                      HTML("<br/>"),
-                                      textOutput(outputId = "alc",
-                                                 inline = TRUE),
-                                      HTML("due to harmful use of alcohol<br /><br />"),
-                                      textOutput(outputId = "dia",
-                                                 inline = TRUE),
-                                      HTML("due to diabetes<br /><br />"),
-                                      textOutput(outputId = "hiv",
-                                                 inline = TRUE),
-                                      HTML("due to HIV<br /><br />"),
-                                      textOutput(outputId = "smk",
-                                                 inline = TRUE),
-                                      HTML("due to smoking<br /><br />"),
-                                      textOutput(outputId = "und",
-                                                 inline = TRUE),
-                                      HTML("due to undernourishment")
+
+                                      htmlOutput(outputId = "attributable_cases",
+                                                 inline = TRUE)
                                )
                            )
                     ),
-
                 ),
 
                 fixedRow(id="tb_prevention",
@@ -191,15 +153,9 @@ ui <- function(request) {
                                       HTML("<img src='people@2x.png'>")
                                ),
                                column(width = 10,
-                                      textOutput(outputId = "notifs_kids",
-                                                 inline = TRUE),
-                                      HTML("children aged under 15 years<br /><br />"),
-                                      textOutput(outputId = "notifs_women",
-                                                 inline = TRUE),
-                                      HTML("women aged 15 years and over<br /><br />"),
-                                      textOutput(outputId = "notifs_men",
-                                                 inline = TRUE),
-                                      HTML("men aged 15 years and over<br /><br />")
+
+                                      htmlOutput(outputId = "notifs_text",
+                                                 inline = TRUE)
                                )
                            )
                            ),
@@ -211,18 +167,11 @@ ui <- function(request) {
                                column(width = 2,
                                       HTML("<img src='medicines@2x.png'>")),
                                column(width = 10,
-                                      textOutput(outputId = "hiv_tpt",
-                                                 inline = TRUE),
-                                      HTML("people living with HIV<br /><br />"),
-                                      textOutput(outputId = "contacts_04_tpt",
-                                                 inline = TRUE),
-                                      HTML("household contacts (aged 0-4 years) of people with TB<br /><br />"),
-                                      textOutput(outputId = "contacts_5plus_tpt",
-                                                 inline = TRUE),
-                                      HTML("household contacts (aged 5 years and above) of people with TB")
+
+                                      htmlOutput(outputId = "tpt_text",
+                                                 inline = TRUE)
                                )
                            )
-
                     )
                 ),
 
@@ -243,19 +192,9 @@ ui <- function(request) {
                                                tags$div(style = "position: absolute;
                                                                  top: 20px;",
 
-                                                        textOutput(outputId = "tbhiv_inc",
-                                                                   inline = TRUE),
-                                                        HTML("fell ill with TB in 2020<br /><br />"),
-                                                        textOutput(outputId = "tbhiv_notif",
-                                                                   inline = TRUE),
-                                                        HTML("notified with TB in 2020<br /><br />"),
-                                                        textOutput(outputId = "tbhiv_tsr_pct",
-                                                                   inline = TRUE),
-                                                        HTML("successfully treated in 2019")
-
+                                                        htmlOutput(outputId = "tbhiv_cascade_text")
                                                )
                                       )
-
                                )
                            )
                            ),
@@ -276,19 +215,9 @@ ui <- function(request) {
                                                       tags$div(style = "position: absolute;
                                                                  top: 20px;",
 
-                                                               textOutput(outputId = "drtb_detect",
-                                                                          inline = TRUE),
-                                                               HTML("detected in 2020<br /><br />"),
-                                                               textOutput(outputId = "drtb_enrol",
-                                                                          inline = TRUE),
-                                                               HTML("started treatment in 2020<br /><br />"),
-                                                               textOutput(outputId = "drtb_tsr_pct",
-                                                                          inline = TRUE),
-                                                               HTML("successfully treated in 2018")
-
+                                                               htmlOutput(outputId = "drtb_cascade_text")
                                                       )
                                              )
-
                                       )
                                )
                            )
@@ -302,18 +231,9 @@ ui <- function(request) {
                                column(width = 2,
                                       HTML("<img src='coins@2x.png'>")),
                                column(width = 10,
-                                      textOutput(outputId = "tot_req",
-                                                 inline = TRUE),
-                                      HTML("million US$ required<br /><br />"),
-                                      textOutput(outputId = "tot_domestic",
-                                                 inline = TRUE),
-                                      HTML("million US$ available from domestic funds<br /><br />"),
-                                      textOutput(outputId = "tot_international",
-                                                 inline = TRUE),
-                                      HTML("million US$ available from international funds<br /><br />"),
-                                      textOutput(outputId = "tot_gap",
-                                                 inline = TRUE),
-                                      HTML("million US$ funding gap<br /><br />")
+
+                                      htmlOutput(outputId = "finance_text",
+                                                 inline = TRUE)
                                )
                            )
                     ),
@@ -325,15 +245,18 @@ ui <- function(request) {
                                column(width = 2,
                                       HTML("<img src='health_worker_form@2x.png'>")),
                                column(width = 10,
-                                      textOutput(outputId = "catast",
-                                                 inline = TRUE),
-                                      textOutput(outputId = "catast_description",
+
+                                      htmlOutput(outputId = "pcs_text",
                                                  inline = TRUE)
+
+                                      # textOutput(outputId = "catast",
+                                      #            inline = TRUE),
+                                      # textOutput(outputId = "catast_description",
+                                      #            inline = TRUE)
 
                                )
                            )
                     )
-
                 ),
                 # Footer that goes on every page
                 htmlOutput(outputId = "generation"),
