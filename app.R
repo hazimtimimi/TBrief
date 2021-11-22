@@ -20,8 +20,8 @@ library(ggplot2)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-# json_url <- "https://extranet.who.int/tme/generateJSON.asp"
-json_url <- "http://localhost/generateJSON.asp"
+json_url <- "https://extranet.who.int/tme/generateJSON.asp"
+
 
 year_countries <- fromJSON(readLines(paste0(json_url, "?ds=countries"), warn = FALSE, encoding = "UTF-8"))
 
