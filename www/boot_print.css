@@ -13,7 +13,7 @@ html {
 }
 /* Reduce vertical space taken up by elements and the font size, which should be expressed in points for printing */
 body {
-	font-size: 6pt;
+	font-size: 10pt;
 	line-height: 1;
 }
 h1 {
@@ -24,19 +24,20 @@ h1 {
 h2, h3 {
 	margin-top: 0;
 	margin-bottom: 3pt;
-	font-size: 12pt;
+	font-size: 14pt;
 	page-break-after: avoid;
 }
 h4, h5, h6 {
 	margin-top: 0;
 	margin-bottom: 3pt;
-	font-size: 8pt;
+	font-size: 12pt;
 }
-img, #tb_cascade_chart {
-	height: 4cm !important;
-	margin-bottom: 5mm;
+
+img {
 	page-break-inside: avoid;
 }
+
+
 .table td, .shiny-table td, .shiny-table.spacing-s td {
 	line-height: 1;
 	padding: 0;
