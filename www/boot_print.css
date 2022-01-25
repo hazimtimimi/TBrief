@@ -1,6 +1,6 @@
 /* CSS for printing */
 /* Don't print country and language selectors and the metadata footer */
-#selectors, #metadata {
+#selectors, #metadata, #detailed_profile {
 	display:none;
 }
 @page {

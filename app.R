@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 0.3"
+app_version <- "Version 0.5"
 
 library(shiny)
 library(jsonlite)
@@ -36,61 +36,6 @@ aggregate_groups <- aggregate_groups$groups
 # Load general, non-reactive functions
 source("general_functions.R")
 
-# Add a function to create a standard block for the UI with an image in a column of size 2
-# and text in a column of size 10, all within a column that will use up half of fixed row that
-# spans the full width of the web page. The web page will be made up of manny such blocks
-
-block_210 <- function(sub_title, image_name, text_name) {
-
-    column(width = 6,
-
-           HTML(sub_title),
-
-           fixedRow(
-               column(width = 2,
-                      HTML(paste0("<img src='", image_name, "'>"))
-               ),
-               column(width = 10,
-
-                      htmlOutput(outputId = text_name,
-                                 inline = TRUE)
-               )
-           )
-    )
-}
-
-# And a similar block, but now with a cascade of care horizontal bar chart placed in the background
-# with text written over it
-
-block_210_cascade <- function(sub_title, image_name, text_name, plot_name) {
-
-    column(width = 6,
-
-           HTML(sub_title),
-
-           fixedRow(
-               column(width = 2,
-                      HTML(paste0("<img src='", image_name, "'>"))
-               ),
-               column(width = 10,
-
-                      tags$div(style = "position: relative;",
-
-                               plotOutput(outputId = plot_name, height = "140px"),
-
-                               # Next DIV allows the text to appear over the chart image
-                               tags$div(style = "position: absolute; top: 20px;",
-
-                                        htmlOutput(outputId = text_name,
-                                                   inline = TRUE)
-                               )
-                      )
-               )
-           )
-    )
-}
-
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Web interface code
@@ -117,8 +62,7 @@ ui <- function(request) {
 
                    column(width = 2,
                           tags$div(class = "navbar navbar-inverse",
-                                   style = "padding-left: 20px;
-                                            background-color: #a2cfde;",
+                                   style = "padding-left: 20px;",
 
                                    uiOutput(outputId = "entitytypes")
 
@@ -130,8 +74,7 @@ ui <- function(request) {
 
                    column(width = 10,
                           tags$div(class = "navbar navbar-inverse",
-                                   style = "padding-left: 20px;
-                                            background-image: url('gtbr_pattern.png');",
+                                   style = "padding-left: 20px;",
 
                                    uiOutput(outputId = "entities")
 
@@ -142,102 +85,35 @@ ui <- function(request) {
 
         fixedRow(id="main_content",
 
-                textOutput(outputId = "main_heading", container = h1),
-                textOutput(outputId = "population", container = h5),
+                 textOutput(outputId = "main_heading", container = h1),
+                 textOutput(outputId = "population", container = h5),
+                 htmlOutput(outputId = "detailed_profile"),
 
-                fixedRow(id="tb_cascade",
+                 HTML("<h2>End TB Strategy: 2020 milestones</h2>
+                      "),
 
-                    column(width = 6,
-                           HTML("<h3>People with TB</h3>"),
+                 column(width = 6,
+                        HTML("<h3>TB incidence rate</h3>"),
+                        plotOutput(outputId = "incidence_milestone_chart")
+                        ),
 
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='tb@2x.png'>")),
-                               column(width = 10,
-
-                                      tags$div(style = "position: relative;",
-
-                                               plotOutput(outputId = "tb_cascade_chart", height = "140px"),
-
-                                               # Next DIV allows the text to appear over the chart image
-                                               tags$div(style = "position: absolute;
-                                                                 top: 20px;",
-
-                                                        htmlOutput(outputId = "tb_cascade_text",
-                                                                   inline = TRUE)
-                                                        )
-                                               )
-                                      )
-                           ),
+                 column(width = 6,
+                        HTML("<h3>Number of TB deaths</h3>"),
+                        plotOutput(outputId = "deaths_milestone_chart")
+                 ),
 
 
-                           HTML("<h3>People who died from TB in 2020</h3>"),
-
-                           fixedRow(
-                               column(width = 2,
-                                      HTML("<img src='death@2x.png'>")),
-                               column(width = 10,
-
-                                      htmlOutput(outputId = "deaths_text",
-                                                 inline = TRUE)
-                               )
-                           )
-                    ),
-
-                    block_210(sub_title = "<h3>Causes of people falling ill with TB in 2020</h3>",
-                              image_name = "question@2x.png",
-                              text_name = "attributable_cases"),
-
-                ),
-
-                fixedRow(id="tb_prevention",
-
-                         block_210(sub_title = "<h3>People notified with TB in 2020</h3>",
-                                   image_name = "people@2x.png",
-                                   text_name = "notifs_text"),
-
-
-                         block_210(sub_title = "<h3>Treatment to prevent TB provided in 2020</h3>",
-                                   image_name = "medicines@2x.png",
-                                   text_name = "tpt_text")
-
-                ),
-
-                fixedRow(id="drtbhiv_cascade",
-
-                         block_210_cascade(sub_title = "<h3>People living with HIV</h3>",
-                                           image_name = "ribbon@2x.png",
-                                           text_name = "tbhiv_cascade_text",
-                                           plot_name = "tbhiv_cascade_chart"),
-
-                         block_210_cascade(sub_title = "<h3>People with drug-resistant TB</h3>",
-                                           image_name = "clinical_a@2x.png",
-                                           text_name = "drtb_cascade_text",
-                                           plot_name = "drtb_cascade_chart")
-                ),
-
-                fixedRow(id="tb_finance",
-
-                         block_210(sub_title = "<h3>National TB programme budget for 2021</h3>",
-                                   image_name = "coins@2x.png",
-                                   text_name = "finance_text"),
-
-                         block_210(sub_title = "<h3>Survey of TB patient costs</h3>",
-                                   image_name = "health_worker_form@2x.png",
-                                   text_name = "pcs_text")
-                ),
-
-                # Footer that goes on every page
+               # Footer that goes on every page
                 htmlOutput(outputId = "generation"),
 
                 # Add an "About" bit of metadata
-                HTML(paste0("<div id='metadata'>",
-                            "<i>",
-                            app_version,
-                            ", Source code on <a href='https://github.com/hazimtimimi/TBrief' target='_blank'>Github</a>. ",
-                            "Data are also available on the TB Report app for <a href='https://apps.apple.com/us/app/tb-report/id1483112411' target='_blank'>iOS</a> and
-                      <a href='https://play.google.com/store/apps/details?id=uk.co.adappt.whotbreport&hl=en_us' target='_blank'>Android</a>
-                      and as <a href='https://www.who.int/teams/global-tuberculosis-programme/data' target='_blank'>CSV files</a>.</i><br /><br /></div>"))
+                # HTML(paste0("<div id='metadata'>",
+                #             "<i>",
+                #             app_version,
+                #             ", Source code on <a href='https://github.com/hazimtimimi/TBrief' target='_blank'>Github</a>. ",
+                #             "Data are also available on the TB Report app for <a href='https://apps.apple.com/us/app/tb-report/id1483112411' target='_blank'>iOS</a> and
+                #       <a href='https://play.google.com/store/apps/details?id=uk.co.adappt.whotbreport&hl=en_us' target='_blank'>Android</a>
+                #       and as <a href='https://www.who.int/teams/global-tuberculosis-programme/data' target='_blank'>CSV files</a>.</i><br /><br /></div>"))
 
             )
         )
@@ -312,9 +188,11 @@ server <- function(input, output, session) {
 
     source("build_header.R", local = TRUE)
 
-    source("build_cascades.R", local = TRUE)
+    #source("build_cascades.R", local = TRUE)
 
-    source("build_statistics.R", local = TRUE)
+    #source("build_statistics.R", local = TRUE)
+
+    source("create_doughnuts.R", local = TRUE)
 
 
     # Add the footer that goes on every page

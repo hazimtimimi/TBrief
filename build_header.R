@@ -26,3 +26,18 @@ output$population <- renderText({
            " million")
 })
 
+output$detailed_profile <- renderText({
+
+    base_url <- "https://worldhealthorg.shinyapps.io/tb_profiles/"
+
+    if (check_entity_type(input$entity_type) == "group") {
+        url <- paste0(base_url, '?_inputs_&lan="EN"&entity_type="group"&group_code="', input$group_code, '"')
+    } else {
+        url <- paste0(base_url, '?_inputs_&entity_type="country"&lan="EN"&iso2="', input$iso2, '"')
+    }
+
+    paste("See also <a href='",
+          url,
+          "' target='_blank'>the detailed TB profile</a>")
+
+})
