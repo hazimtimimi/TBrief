@@ -186,7 +186,7 @@ target_doughnut_text <- function(achieved_val, target_val, palette_val, target_t
              y = 0.25,
              xend = 3,
              yend = 0.25,
-             colour = "darkred",
+             colour = "#E10600",
              linetype = "11", #1 unit on, 1 unit off to give dots
              size = 1.2) +
 
@@ -203,7 +203,7 @@ target_doughnut_text <- function(achieved_val, target_val, palette_val, target_t
              y = 0.23,
              size = 10,
              fontface = "bold",
-             colour = "darkred",
+             colour = "#E10600",
              label = achieved_text) +
 
     annotate("text",
