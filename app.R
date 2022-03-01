@@ -92,16 +92,23 @@ ui <- function(request) {
                  HTML("<h2>End TB Strategy: 2020 milestones</h2>
                       "),
 
-                 column(width = 6,
+                 column(width = 4,
                         HTML("<h3>TB incidence rate</h3>"),
-                        plotOutput(outputId = "incidence_milestone_chart")
+                        HTML("<h4>Target: <span style='font-size:120%; font-weight:bold;'>20%</span> reduction 2015&mdash;2020<br />&nbsp;</h4>"),
+                        plotOutput(outputId = "incidence_milestone_bar", height = "200px")
                         ),
 
-                 column(width = 6,
+                 column(width = 4,
                         HTML("<h3>Number of TB deaths</h3>"),
-                        plotOutput(outputId = "deaths_milestone_chart")
+                        HTML("<h4>Target: <span style='font-size:120%; font-weight:bold;'>35%</span> reduction 2015&mdash;2020<br />&nbsp;</h4>"),
+                        plotOutput(outputId = "deaths_milestone_bar", height = "200px")
                  ),
 
+                 column(width = 4,
+                        HTML("<h3>Catastrophic costs</h3>"),
+                        HTML("<h4>Target: <span style='font-size:120%; font-weight:bold;'>0%</span> of people with TB facing catastrophic costs by 2020</h4>"),
+                        plotOutput(outputId = "catastrophic_milestone_bar", height = "200px")
+                 ),
 
                # Footer that goes on every page
                 htmlOutput(outputId = "generation"),
@@ -192,7 +199,8 @@ server <- function(input, output, session) {
 
     #source("build_statistics.R", local = TRUE)
 
-    source("create_doughnuts.R", local = TRUE)
+    #source("create_doughnuts.R", local = TRUE)
+    source("create_horizontal_bars.r", local = TRUE)
 
 
     # Add the footer that goes on every page
