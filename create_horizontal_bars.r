@@ -98,7 +98,7 @@ target_achieved_bar <- function(achieved_val, target_val, achieved_text){
     geom_col(aes(x=1, y=achieved_val),
              fill="darkblue",
              size=.3,
-             width = 0.35,
+             width = 0.4,
              position="identity")  +
 
     annotate("text",
