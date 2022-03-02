@@ -7,6 +7,7 @@
 app_version <- "Version 0.3"
 
 library(shiny)
+library(shinydashboard)
 library(jsonlite)
 library(dplyr)
 library(tidyr)
@@ -96,7 +97,12 @@ block_210_cascade <- function(sub_title, image_name, text_name, plot_name) {
 # Web interface code
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-ui <- function(request) {
+ui <- dashboardPage(
+
+    dashboardHeader(title = "Summary of tuberculosis data"),
+    dashboardSidebar(disable = TRUE),
+    dashboardBody(
+
 
     fixedPage(title = "Summary of tuberculosis data",
 
@@ -429,7 +435,136 @@ ui <- function(request) {
                              ),
 
                     tabPanel("Questions v2",
-                             HTML("<p>The second version of questions to go here!</p>")
+
+                             # Start of questions tab (version 2)! ---------------------
+
+                             HTML("<h1>The second version of questions to go here!</h1>"),
+
+                             fixedRow(
+                                 column(width = 6,
+                                        HTML("<h2>TB deaths</h2>"),
+
+                                        plotOutput(outputId = "mortality_chart_v2", height = "200px"),
+
+                                        HTML("<p style='font-size:120%;'><b>2020 TB deaths</b><br />
+                                     <span style='font-size:150%; color:#1D91D1;'><b>123 456</b></span> (one every 5 minutes)<br />
+                                     <b>+z%</b> vs 2019  <span style='color:red'><b>&uarr;</b></span></p>
+                                     <i>Range xxx - xxx</i>
+
+									 <p style='font-size:120%;'>&nbsp;<br />
+                                     <span style='font-size:150%; color:#1D91D1;'><b>321</b></span> per 100 000 population<br />
+                                     <b>+z%</b> vs 2019  <span style='color:red'><b>&uarr;</b></span></p>
+                                     <i>Range xxx - xxx</i>
+
+									 <i>Includes TB deaths in people living with HIV.</i>")
+									 ),
+
+									 column(width = 6,
+									        HTML("<h2>People ill with TB</h2>"),
+
+									        plotOutput(outputId = "incidence_chart_v2", height = "200px"),
+
+									        HTML("<p style='font-size:120%;'><b>2020 TB incidence</b><br />
+                                     <span style='font-size:150%; color:#91A93E;'><b>123 456</b></span> (one every 5 minutes)<br />
+                                     <b>-z%</b> vs 2019  <span style='color:#91A93E'>&darr;</span></p>
+
+                                     <i>Range xxx - xxx</i></p>
+
+									 <p style='font-size:120%;'>&nbsp;<br />
+                                     <span style='font-size:150%; color:#91A93E;'><b>789</b></span> per 100 000 population<br />
+                                     <b>-z%</b> vs 2019  <span style='color:#91A93E;'>&darr;</span></p>
+                                     <i>Range xxx - xxx</i></p>
+
+									 <i>Incidence and notifications include drug-resistant TB and TB in people living with HIV.</i>")
+									        )
+
+                             ),
+
+
+							 fixedRow(
+
+							     column(width = 6,
+
+							            HTML("<h2>TB treatment</h2>"),
+
+							            HTML("<p style='font-size:120%;'><b>TB treatment success</b></p>"),
+
+							            tags$div(style = "position: relative;",
+
+							                     plotOutput(outputId =  "tsr_chart_v2", height = "180px"),
+
+							                     # Next DIV allows the text to appear over the chart image
+							                     tags$div(style = "position: absolute; top: 20px; left: 1em; font-size:120%;",
+
+							                              HTML("<span style='font-size:150%;'><b>x%</b></span> of those treated for TB (2019)<br />
+                                                       <br /><br />
+                                                       <span style='font-size:150%;'> <b>x%</b></span> of those treated for drug-resistant TB (2018)")
+							                     )
+
+							            ),
+
+							            HTML("<p style='font-size:120%;'><b>2020 TB notifications</b><br /><br />
+                                     <span style='font-size:150%;'><b>98 765</b></span> people newly diagnosed and reported<br />
+                                     <b>-z%</b> vs 2019  <span style='color:red'>&darr;</span></p>
+
+                                     <p style='font-size:120%;'><span style='font-size:150%;'><b>xx%</b></span> diagnosed using WHO-recommended rapid diagnostics</p>
+
+									 <p style='font-size:120%;'>&nbsp;<br /><br />
+                                     <span style='font-size:150%;'><b>987</b></span> diagnosed with drug-resistant TB<br />
+                                     <b>-z%</b> vs 2019  <span style='color:#91A93E;'>&darr;</span></p>
+
+                                     <p style='font-size:120%;'><span style='font-size:150%;'><b>800</b></span> started on treatment for drug-resistant TB<br />
+                                     <span style='font-size:150%;'><b>xx%</b></span> of those on WHO-recommended shorter regimens</p>")
+
+							            ),
+
+							     column(width = 6,
+
+							            HTML("<h2>Why did people fall ill with TB?</h2>
+							                 <h3>Contributing factors in 2020</h3>"),
+
+							            plotOutput(outputId = "rf_chart_v2", height = "200px")
+
+							            )
+
+							 ),
+
+
+							 fixedRow(
+
+							     column(width = 6,
+
+							            HTML("<h2>Preventive treatment</h2>"),
+
+							            plotOutput(outputId = "tpt_chart_v2", height = "200px"),
+
+							            HTML("<p style='font-size:120%;'><b>2020 TB preventive treatment</b><br />
+                                     <span style='font-size:150%;'><b>yyyy</b></span> people in total<br/>
+                                     <b>+z%</b> vs 2019  <span style='color:#91A93E;'>&uarr;</span></p>
+
+                                     <p style='font-size:120%;'>
+                                     <span style='font-size:150%;color:#ffc425;'><b>aaa</b></span> (<b>xx%</b>) people living with HIV<br/>
+                                     <span style='font-size:150%;color:#9fcd25;'><b>bbb</b></span> (<b>yy%</b>) household contacts aged under 5 years<br/>
+                                     <span style='font-size:150%;color:dark green;'><b>ccc</b></span> (<b>zz%</b>) household contacts aged 5 years and over")
+
+							     ),
+
+							     column(width = 6,
+
+							            HTML("<h2>Financing</h2>"),
+
+							            plotOutput(outputId = "budget_chart_v2", height = "200px"),
+
+							            HTML("<p style='font-size:120%;'><b>2021 National TB budget</b><br /><br />
+                                     <span style='font-size:150%;color:#ffc425;'><b>zzz</b></span> of the xxx USD million national TB budget was funded<br />
+                                     <span style='font-size:150%;color:#D84D3F;'><b>z%</b></span> (<b>xxx</b> USD million) was not funded</p>")
+
+							     )
+
+							 )
+
+							# End of questions tab (version 2)! ---------------------
+
                              )
 
                     ),
@@ -449,8 +584,9 @@ ui <- function(request) {
 
             )
         )
+    )
+)
 
-}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
