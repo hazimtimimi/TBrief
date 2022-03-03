@@ -48,6 +48,21 @@ relatable_num <- function(x){
                        )
                 )
          )
-
 }
 
+# Calculate % change and describe it as increase or decrease
+pct_change_description <- function(x1, x2){
+
+  ifelse(NZ(x1)==0 | is.na(x2),
+         "No data",
+         ifelse(x1 == x2,
+                "0% change",
+                paste0(signif(abs((x1 - x2) * 100/x1),2),
+                      "%",
+                      ifelse(x2 <= x1,
+                             " reduction",
+                             " increase")
+                      )
+                )
+         )
+}

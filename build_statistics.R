@@ -2,6 +2,71 @@
 # Build outputs showing numbers
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+# End TB Strategy milestones
+output$milestone_deaths <- renderInfoBox(
+
+  infoBox(title = "TB deaths 2020 vs 2015",
+          subtitle = "(Target is 35% reduction)",
+          value = pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"],
+                                         pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+          icon = icon("skull")
+          )
+)
+
+output$milestone_incidence <- renderInfoBox(
+
+  infoBox(title = "TB incidence 2020 vs 2015",
+          subtitle = "(Target is 20% reduction)",
+          value = pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"],
+                                         pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]),
+          icon = icon("head-side-cough")
+          )
+)
+
+output$milestone_catast <- renderInfoBox(
+
+  infoBox(title = "Catastrophic costs",
+          subtitle = "(Target is 0% of people with TB facing catastrophic costs by 2020)",
+          value = ifelse(is.na(pdata()$profile_data[, "catast_pct"]),
+                         "No data",
+                         paste0(signif(pdata()$profile_data[, "catast_pct"], 2), "%")
+                         ),
+          icon = icon("balance-scale-left")
+          )
+)
+
+output$achieved_deaths <- renderText(
+
+  HTML(paste("<h4>Achieved: <span style='font-size:120%; font-weight:bold;'>",
+        pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"],
+                               pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+        "</span></h4>"))
+)
+
+output$achieved_incidence <- renderText(
+
+  HTML(paste("<h4>Achieved: <span style='font-size:120%; font-weight:bold;'>",
+             pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"],
+                                    pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]),
+             "</span></h4>"))
+)
+
+output$achieved_catast <- renderText(
+
+  HTML(paste("<h4>Achieved: <span style='font-size:120%; font-weight:bold;'>",
+             ifelse(is.na(pdata()$profile_data[, "catast_pct"]),
+                    "No data",
+                    paste0(signif(pdata()$profile_data[, "catast_pct"], 2), "%")
+             ),
+             "</span></h4>"))
+)
+
+
+
+
+
+
 # TB cascade
 output$tb_cascade_text <- renderText(
 
@@ -155,26 +220,6 @@ output$finance_text <- renderText(
          ftb_na(pdata()$profile_data$tot_gap, int_spacer),
          "</span> million US$ funding gap")
 )
-
-
-
-# Patient cost survey results
-# output$catast <- renderText(
-#
-#   ifelse(!is.na(pdata()$profile_data[, "catast_pct"]),
-#          paste0(pdata()$profile_data$catast_pct,
-#                 "%"),
-#          "")
-# )
-#
-# output$catast_description <- renderText(
-#
-#   ifelse(!is.na(pdata()$profile_data[, "catast_pct"]),
-#          paste0("of TB patients experienced catastrophic total costs (survey conducted in ",
-#                 pdata()$profile_data$catast_survey_year,
-#                 ")"),
-#          "No survey completed yet")
-# )
 
 
 output$pcs_text <- renderText(

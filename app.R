@@ -99,7 +99,8 @@ block_210_cascade <- function(sub_title, image_name, text_name, plot_name) {
 
 ui <- dashboardPage(
 
-    dashboardHeader(title = "Summary of tuberculosis data"),
+    dashboardHeader(title = "Summary of tuberculosis data",
+                    titleWidth = 300),
     dashboardSidebar(disable = TRUE),
     dashboardBody(
 
@@ -159,45 +160,44 @@ ui <- dashboardPage(
 
                              # Start of milestones tab! ---------------------
 
-                             HTML("<h2>End TB Strategy: 2020 milestones</h2>"),
+                             HTML("<h1>End TB Strategy</h1><h2>Milestones for 2020</h2>"),
 
-                             column(width = 4,
-                                    HTML("<h3>Number of TB deaths</h3>"),
-                                    HTML("<h4>Target: <span style='font-size:120%; font-weight:bold;'>35%</span> reduction 2015&mdash;2020<br />&nbsp;</h4>"),
-                                    plotOutput(outputId = "deaths_milestone_bar", height = "200px")
+                             fluidRow(
+                               infoBoxOutput(outputId = "milestone_deaths"),
+                               infoBoxOutput(outputId = "milestone_incidence"),
+                               infoBoxOutput(outputId = "milestone_catast")
                              ),
 
-                             column(width = 4,
-                                     HTML("<h3>TB incidence rate</h3>"),
-                                     HTML("<h4>Target: <span style='font-size:120%; font-weight:bold;'>20%</span> reduction 2015&mdash;2020<br />&nbsp;</h4>"),
-                                     plotOutput(outputId = "incidence_milestone_bar", height = "200px")
-                              ),
+                             HTML("<h1>Alternative</h1>"),
 
-                             column(width = 4,
-                                     HTML("<h3>Catastrophic costs</h3>"),
-                                     HTML("<h4>Target: <span style='font-size:120%; font-weight:bold;'>0%</span> of people with TB facing catastrophic costs by 2020</h4>"),
-                                     plotOutput(outputId = "catastrophic_milestone_bar", height = "200px")
-                              ),
+                             fluidRow(
+                               box(title = "Number of TB deaths 2020 vs 2015",
+                                   solidHeader = TRUE,
+                                   status = "info",
+                                   width = 4,
+                                   htmlOutput(outputId = "achieved_deaths"),
+                                   HTML("<h4>Target: 35% reduction<br />&nbsp;</h4>"),
+                                   plotOutput(outputId = "deaths_milestone_bar", height = "200px")
+                               ),
 
-                             fixedRow(id="milestones_alt",
-                                      HTML("<h1>Alternative (illustration)</h1><h2>End TB Strategy milestones for 2020 vs 2015</h2>"),
-                                      column(width=2,
-                                             HTML("<p style='font-size:120%;border:1px #999999 solid;padding-left:1em;'><b>2020 TB deaths</b><br />
-                                     <span style='font-size:150%; color:red'><b>-17%</b></span><br />
-                                     vs -35% target</p>"),
-                                     offset = 3),
-                                     column(width=2,
-                                            HTML("<p style='font-size:120%;border:1px #999999 solid;padding-left:1em;'><b>2020 TB incidence</b><br />
-                                     <span style='font-size:150%; color:red'><b>-9%</b></span><br />
-                                     vs -20% target</p>")),
+                               box(title = "TB incidence rate 2020 vs 2015",
+                                   solidHeader = TRUE,
+                                   status = "info",
+                                   width = 4,
+                                   htmlOutput(outputId = "achieved_incidence"),
+                                   HTML("<h4>Target: 20% reduction<br />&nbsp;</h4>"),
+                                   plotOutput(outputId = "incidence_milestone_bar", height = "200px")
+                               ),
 
-                                     column(width=2,
-                                            HTML("<p style='font-size:120%;border:1px #999999 solid;padding-left:1em;'><b>Catastrophic costs</b><br />
-                                     <span style='font-size:150%; color:#666666;'><b>No data</b></span><br />
-                                     vs 0% target</p>"))
-                             ),
-
-                             HTML("<br /><br />")
+                               box(title = "Catastrophic costs",
+                                   solidHeader = TRUE,
+                                   status = "info",
+                                   width = 4,
+                                   htmlOutput(outputId = "achieved_catast"),
+                                   HTML("<h4>Target: 0% of people with TB facing catastrophic costs by 2020</h4>"),
+                                   plotOutput(outputId = "catastrophic_milestone_bar", height = "200px")
+                               )
+                             )
 
                              # End of milestones tab! ---------------------
 

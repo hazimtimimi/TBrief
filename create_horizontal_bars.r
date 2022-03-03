@@ -91,14 +91,14 @@ target_achieved_bar <- function(achieved_val, target_val, achieved_text){
 
     geom_col(aes(x=1, y=target_val),
              fill="lightblue",
-             size=.0,
              width = 0.4,
+             colour = "darkblue",
              position="identity")   +
 
     geom_col(aes(x=1, y=achieved_val),
              fill="darkblue",
-             size=.3,
              width = 0.4,
+             colour = "darkblue",
              position="identity")  +
 
     annotate("text",
@@ -109,14 +109,14 @@ target_achieved_bar <- function(achieved_val, target_val, achieved_text){
     annotate("text",
              x=1,
              y=ifelse(achieved_val <= 0, achieved_val - 2, achieved_val)*1.2,
-             label=paste0("Actual:\n", achieved_text, ifelse(achieved_val < 0, "\nincrease", "")),
+             label=paste0(achieved_text, ifelse(achieved_val < 0, "\nincrease", "")),
              colour="darkblue") +
 
     annotate("segment",
-             x = 0.5, y = 0,
-             xend = 1.5, yend = 0,
+             x = 0.7, y = 0,
+             xend = 1.3, yend = 0,
              colour = "gray",
-             size = 0.25) +
+             size = 1) +
 
     # ensure there is enough space to show the text annotations
     xlim(0.5,1.5) +
