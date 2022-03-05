@@ -105,7 +105,7 @@ ui <- dashboardPage(
     dashboardBody(
 
 
-    fixedPage(title = "Summary of tuberculosis data",
+    fluidPage(title = "Summary of tuberculosis data",
 
               # Add a link to the boostrap CSS Sandstone theme downloaded from
               # https://bootswatch.com/3/sandstone/bootstrap.css
@@ -116,16 +116,19 @@ ui <- dashboardPage(
               tags$head(
 
                   tags$link(rel = "stylesheet", type = "text/css", href = "tbrief.css"),
-                  tags$link(rel = "stylesheet", type = "text/css", href = "bootstrap.css"),
-                  tags$link(rel = "stylesheet", type = "text/css", href = "boot_print.css", media="print")
+                  #tags$link(rel = "stylesheet", type = "text/css", href = "bootstrap.css"),
+                  #tags$link(rel = "stylesheet", type = "text/css", href = "boot_print.css", media="print")
               ),
 
-        fixedRow(id="selectors",
+              fluidRow(id="selectors",
 
                    column(width = 2,
-                          tags$div(class = "navbar navbar-inverse",
-                                   style = "padding-left: 20px;
-                                            background-color: #a2cfde;",
+                          tags$div(style = "padding-left: 20px;
+                                            color: #ffffff;
+                                            background-color: #367fa9;
+                                            margin-bottom: 20px;
+                                            border: 1px solid transparent;
+                                            border-radius: 4px;",
 
                                    uiOutput(outputId = "entitytypes")
 
@@ -136,9 +139,11 @@ ui <- dashboardPage(
                  # based on the choice made above
 
                    column(width = 10,
-                          tags$div(class = "navbar navbar-inverse",
-                                   style = "padding-left: 20px;
-                                            background-image: url('gtbr_pattern.png');",
+                          tags$div(style = "padding-left: 20px;
+                                            background-color: #367fa9;
+                                            margin-bottom: 20px;
+                                            border: 1px solid transparent;
+                                            border-radius: 4px;",
 
                                    uiOutput(outputId = "entities")
 
@@ -147,7 +152,7 @@ ui <- dashboardPage(
                  ),
 
 
-        fixedRow(id="main_content",
+        fluidRow(id="main_content",
 
                 textOutput(outputId = "main_heading", container = h1),
                 textOutput(outputId = "population", container = h5),
