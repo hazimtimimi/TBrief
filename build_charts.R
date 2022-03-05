@@ -6,7 +6,7 @@
 # 1. Mortality 2000 - latest year
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-output$mortality_chart_v2 <-  renderPlot({
+output$mortality_chart <-  renderPlot({
 
   # Make sure there are data to plot
   req(pdata()$epi_timeseries)
@@ -52,7 +52,7 @@ output$mortality_chart_v2 <-  renderPlot({
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-output$incidence_chart_v2 <-  renderPlot({
+output$incidence_chart <-  renderPlot({
 
   # Make sure there are data to plot
   req(pdata()$epi_timeseries)
@@ -109,7 +109,7 @@ output$incidence_chart_v2 <-  renderPlot({
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-output$rf_chart_v2 <-  renderPlot({
+output$rf_chart <-  renderPlot({
 
   # Make sure there are data to plot
   req(is.data.frame(pdata()$attributable_cases))
@@ -171,7 +171,7 @@ output$rf_chart_v2 <-  renderPlot({
 # 4. Treatment success rate - latest year
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-output$tsr_chart_v2 <-  renderPlot({
+output$tsr_chart <-  renderPlot({
 
   # Make sure there are data to plot
   req(pdata()$profile_data$c_new_tsr)
@@ -214,7 +214,7 @@ output$tsr_chart_v2 <-  renderPlot({
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-output$tpt_chart_v2 <- renderPlot({
+output$tpt_chart <- renderPlot({
 
   # Make sure there are data to plot
   req(pdata()$tpt_timeseries)
@@ -266,7 +266,7 @@ output$tpt_chart_v2 <- renderPlot({
 # 6. Budget most recent 5 years
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-output$budget_chart_v2 <-  renderPlot({
+output$budget_chart <-  renderPlot({
 
   # Make sure there are data to plot
   req(pdata()$profile_finance)
