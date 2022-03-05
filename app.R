@@ -213,25 +213,19 @@ ui <- dashboardPage(
                              # Start of indicators tab! ---------------------
 
                              fluidRow(
-                               box(title = "TB deaths",
-                                   solidHeader = TRUE,
-                                   status = "info",
-                                   plotOutput(outputId = "mortality_chart", height = "200px"),
+                                 column(width = 6,
+                                        box(title = "TB deaths (including in people living with HIV)",
+                                             solidHeader = TRUE,
+                                             status = "info",
+                                             width = 12,
+                                             plotOutput(outputId = "mortality_chart", height = "200px")),
+                  						infoBoxOutput(outputId = "tb_deaths_num",
+                  						              width = 12),
+                  						infoBoxOutput(outputId = "tb_deaths_rate",
+                  						              width = 12)
+                                 ),
 
-                                   HTML("<p style='font-size:120%;'><b>2020 TB deaths</b><br />
-                                     <span style='font-size:150%; color:#1D91D1;'><b>123 456</b></span> (one every 5 minutes)<br />
-                                     <b>+z%</b> vs 2019  <span style='color:red'><b>&uarr;</b></span></p>
-                                     <i>Range xxx - xxx</i>
-
-                  									 <p style='font-size:120%;'>&nbsp;<br />
-                                                       <span style='font-size:150%; color:#1D91D1;'><b>321</b></span> per 100 000 population<br />
-                                                       <b>+z%</b> vs 2019  <span style='color:red'><b>&uarr;</b></span></p>
-                                                       <i>Range xxx - xxx</i>
-
-                  									 <i>Includes TB deaths in people living with HIV.</i>")
-                               ),
-
-                  									 box(title = "People ill with TB",
+                  									 box(title = "People falling ill with TB (including drug-resistant TB)",
                   									     solidHeader = TRUE,
                   									     status = "info",
                   									     plotOutput(outputId = "incidence_chart", height = "200px"),
@@ -245,9 +239,7 @@ ui <- dashboardPage(
                           									 <p style='font-size:120%;'>&nbsp;<br />
                                                                <span style='font-size:150%; color:#91A93E;'><b>789</b></span> per 100 000 population<br />
                                                                <b>-z%</b> vs 2019  <span style='color:#91A93E;'>&darr;</span></p>
-                                                               <i>Range xxx - xxx</i></p>
-
-                          									 <i>Incidence and notifications include drug-resistant TB and TB in people living with HIV.</i>")
+                                                               <i>Range xxx - xxx</i></p>")
                   									 )
                              ),
 

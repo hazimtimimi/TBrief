@@ -50,6 +50,26 @@ relatable_num <- function(x){
          )
 }
 
+# Convert an annual number to number per day
+relatable_number <- function(x){
+  ifelse(length(x)==0,
+         "",
+         ifelse(is.na(x),
+                "",
+                ifelse(x>=365*24*60,
+                       paste0("one person every ", round(365*24*60*60/x), " seconds"),
+                       ifelse(x>=365*24,
+                              paste0("one person every ", round(365*24*60/x), " minutes"),
+                              ifelse(x>=365,
+                                     paste0("one person every ", round(8760/x), " hours"),
+                                     paste0("one person every ", round(365/x), " days")
+                              )
+                       )
+                )
+         )
+  )
+}
+
 # Calculate % change and describe it as increase or decrease
 pct_change_description <- function(x1, x2){
 
@@ -57,12 +77,28 @@ pct_change_description <- function(x1, x2){
          "No data",
          ifelse(x1 == x2,
                 "0% change",
-                paste0(signif(abs((x1 - x2) * 100/x1),2),
+                paste0(signif(abs(x2 - x1) * 100/x1,2),
                       "%",
                       ifelse(x2 <= x1,
                              " reduction",
                              " increase")
                       )
+                )
+         )
+}
+
+# Calculate % change and prefix with an HTM arrow entity
+pct_change_arrow <- function(x1, x2){
+
+  ifelse(NZ(x1)==0 | is.na(x2),
+         "No data",
+         ifelse(x1 == x2,
+                "<b>&harr;</b> 0%",
+                paste0(ifelse(x2 <= x1,
+                              "<b>&darr;</b> -",
+                              "<b>&uarr;</b> +"),
+                       signif(abs(x2 - x1) * 100/x1,2),
+                       "%")
                 )
          )
 }

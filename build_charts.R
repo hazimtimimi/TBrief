@@ -34,7 +34,7 @@ output$mortality_chart <-  renderPlot({
 
     scale_x_continuous(name=element_blank(), breaks = c(2000, dcyear-1)) +
 
-    ylab("TB deaths\nnumber per year") +
+    ylab("Number per year") +
 
     gtbreport::theme_gtb() +
 
@@ -69,7 +69,7 @@ output$incidence_chart <-  renderPlot({
                 fill=gtbreport::palette_gtb("inc"),
                 alpha=0.1) +
 
-    geom_line(mapping=aes(x=year, y=e_inc_100k, colour="Estimated incidence"),
+    geom_line(mapping=aes(x=year, y=e_inc_100k, colour="TB incidence"),
               size=3) +
 
     # Add End TB strategy milestone as dashed line
@@ -80,17 +80,17 @@ output$incidence_chart <-  renderPlot({
              x=2016,
              y=inc_milestone*1.15) +
 
-    geom_line(mapping=aes(x=year, y=c_newinc_100k, colour="Notified"),
+    geom_line(mapping=aes(x=year, y=c_newinc_100k, colour="People notified with TB"),
               size=3) +
 
-    scale_color_manual(values = c('Estimated incidence' = gtbreport::palette_gtb("inc"),
-                                  'Notified' = '#000000')) +
+    scale_color_manual(values = c('TB incidence' = gtbreport::palette_gtb("inc"),
+                                  'People notified with TB' = '#000000')) +
 
     scale_x_continuous(name=element_blank(), breaks = c(2000, dcyear-1)) +
 
     scale_y_continuous(limits = c(0, NA)) +
 
-    ylab("TB incidence rate\nper 100 000 per year") +
+    ylab("Number\nper 100 000 per year") +
 
     gtbreport::theme_gtb() +
 

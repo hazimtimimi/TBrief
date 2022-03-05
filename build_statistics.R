@@ -3,7 +3,10 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # End TB Strategy milestones
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 output$milestone_deaths <- renderInfoBox(
 
   infoBox(title = "TB deaths 2020 vs 2015",
@@ -61,6 +64,55 @@ output$achieved_catast <- renderText(
              ),
              "</span></h4>"))
 )
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Indicators
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# TB deaths
+output$tb_deaths_num <- renderInfoBox(
+
+  infoBox(title = "Number of TB deaths 2020",
+
+          value = paste0(ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+                        " (",
+                        relatable_number(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+                        ")"
+                        ),
+
+          subtitle = HTML(paste0("Range ",
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num_lo"]),
+                                 "-",
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num_hi"]),
+                                 ". (",
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2019, "e_mort_num"]),
+                                 " in 2019 ",
+                                 pct_change_arrow(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2019, "e_mort_num"],
+                                                  pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+                                 ")")
+                          ),
+
+          icon = icon("skull")
+  )
+)
+
+output$tb_deaths_rate <- renderInfoBox(
+
+  infoBox(title = "TB death rate 2020",
+
+          value = paste0(ftb(pdata()$profile_estimates$e_mort_100k),
+                         " per 100 000 population"),
+
+          subtitle = paste0("Range ",
+                            ftb(pdata()$profile_estimates$e_mort_100k_lo),
+                            "-",
+                            ftb(pdata()$profile_estimates$e_mort_100k_hi)),
+
+          icon = icon("skull")
+  )
+)
+
 
 
 
