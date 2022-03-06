@@ -212,86 +212,95 @@ ui <- dashboardPage(
 
                              # Start of indicators tab! ---------------------
 
-                             fluidRow(
-                                 column(width = 6,
-                                        box(title = "TB deaths (including in people living with HIV)",
-                                             solidHeader = TRUE,
-                                             status = "info",
-                                             width = 12,
-                                             plotOutput(outputId = "mortality_chart", height = "200px")),
-                  						infoBoxOutput(outputId = "tb_deaths_num",
-                  						              width = 12),
-                  						infoBoxOutput(outputId = "tb_deaths_rate",
-                  						              width = 12)
+                             fluidRow(column(
+                                 width = 6,
+                                 box(
+                                     title = "TB deaths (including in people living with HIV)",
+                                     solidHeader = TRUE,
+                                     status = "info",
+                                     width = 12,
+                                     plotOutput(outputId = "mortality_chart", height = "200px")
                                  ),
 
-                  									 box(title = "People falling ill with TB (including drug-resistant TB)",
-                  									     solidHeader = TRUE,
-                  									     status = "info",
-                  									     plotOutput(outputId = "incidence_chart", height = "200px"),
+                                 infoBoxOutput(outputId = "tb_deaths_num", width = 12),
 
-                  									     HTML("<p style='font-size:120%;'><b>2020 TB incidence</b><br />
-                                                   <span style='font-size:150%; color:#91A93E;'><b>123 456</b></span> (one every 5 minutes)<br />
-                                                   <b>-z%</b> vs 2019  <span style='color:#91A93E'>&darr;</span></p>
+                                 infoBoxOutput(outputId = "tb_deaths_rate", width = 12)
+                             ),
+                             column(width = 6,
+                      			         box(title = "People falling ill with TB (including drug-resistant TB)",
+                      			             solidHeader = TRUE,
+                      			             # Weird that we need to use a status of "success" instead
+                      			             # of simply specifying a colour. Of course could use CSS
+                      			             # but this is quicker ... just don;t read anything into the
+                      			             # idea of "success"!
+                      			             status = "success",
+                      			             width = 12,
+                      			             plotOutput(outputId = "incidence_chart", height = "200px")
+                      			             ),
 
-                                                   <i>Range xxx - xxx</i></p>
+                      			         infoBoxOutput(outputId = "tb_incidence_num", width = 12),
 
-                          									 <p style='font-size:120%;'>&nbsp;<br />
-                                                               <span style='font-size:150%; color:#91A93E;'><b>789</b></span> per 100 000 population<br />
-                                                               <b>-z%</b> vs 2019  <span style='color:#91A93E;'>&darr;</span></p>
-                                                               <i>Range xxx - xxx</i></p>")
-                  									 )
+                      			         infoBoxOutput(outputId = "tb_incidence_rate", width = 12)
+                  						)
                              ),
 
 
-                             fluidRow(
-                               box(title = "TB treatment",
-                                   solidHeader = TRUE,
-                                   status = "info",
+                  						fluidRow(
+                  						    column(
+                  						    width = 6,
 
-                                   HTML("<p style='font-size:120%;'><b>TB treatment success</b></p>"),
+                  						    infoBoxOutput(outputId = "tb_notified_num", width = 12),
 
-                                   tags$div(style = "position: relative;",
+                  						    infoBoxOutput(outputId = "diagnosed_wrd", width = 12),
 
-                                            plotOutput(outputId =  "tsr_chart", height = "180px"),
+                  						    infoBoxOutput(outputId = "rrmdr_num", width = 12),
 
-                                            # Next DIV allows the text to appear over the chart image
-                                            tags$div(style = "position: absolute; top: 20px; left: 1em; font-size:120%;",
+                  						    infoBoxOutput(outputId = "mdr_tx_num", width = 12),
 
-                                                     HTML("<span style='font-size:150%;'><b>x%</b></span> of those treated for TB (2019)<br />
+                  						    infoBoxOutput(outputId = "mdr_tx_short_num", width = 12)
+
+                  						),
+
+              									 column(
+              									     width = 6,
+
+              									     box(
+              									         title = "Why did people fall ill with TB in 2020?",
+              									         solidHeader = TRUE,
+              									         status = "success",
+              									         width = 12,
+              									         plotOutput(outputId = "rf_chart", height = "200px")
+              									     ),
+
+              									     box(
+              									         title = "TB treatment success",
+              									         solidHeader = TRUE,
+              									         status = "primary",
+              									         width = 12,
+
+              									         tags$div(
+              									             style = "position: relative;",
+
+              									             plotOutput(outputId =  "tsr_chart", height = "170px"),
+
+              									             # Next DIV allows the text to appear over the chart image
+              									             tags$div(
+              									                 style = "position: absolute; top: 20px; left: 1em; font-size:120%;",
+
+              									                 HTML(
+              									                     "<span style='font-size:150%;'><b>x%</b></span> of those started TB treatment in 2019<br />
                                                                      <br /><br />
-                                                                     <span style='font-size:150%;'> <b>x%</b></span> of those treated for drug-resistant TB (2018)")
-                                            )
+                                                                     <span style='font-size:150%;'> <b>x%</b></span> of those started drug-resistant TB treatment in 2018"
+              									                 )
+              									             )
 
-                                   ),
+              									         ),
 
-                                   HTML("<p style='font-size:120%;'><b>2020 TB notifications</b><br /><br />
-                                                   <span style='font-size:150%;'><b>98 765</b></span> people newly diagnosed and reported<br />
-                                                   <b>-z%</b> vs 2019  <span style='color:red'>&darr;</span></p>
+              									     )
 
-                                                   <p style='font-size:120%;'><span style='font-size:150%;'><b>xx%</b></span> diagnosed using WHO-recommended rapid diagnostics</p>
 
-              									 <p style='font-size:120%;'>&nbsp;<br /><br />
-                                                   <span style='font-size:150%;'><b>987</b></span> diagnosed with drug-resistant TB<br />
-                                                   <b>-z%</b> vs 2019  <span style='color:#91A93E;'>&darr;</span></p>
-
-                                                   <p style='font-size:120%;'><span style='font-size:150%;'><b>800</b></span> started on treatment for drug-resistant TB<br />
-                                                   <span style='font-size:150%;'><b>xx%</b></span> of those on WHO-recommended shorter regimens</p>")
-
-                               ),
-
-              									 box(title = "Why did people fall ill with TB?",
-              									     solidHeader = TRUE,
-              									     status = "info",
-              									     HTML("<h3>Contributing factors in 2020</h3>"),
-              									     plotOutput(outputId = "rf_chart", height = "200px"),
-              									     HTML("<p style='font-size:120%;'>&nbsp;<br /><br />
-                                     <span style='font-size:150%;'><b>XXXXXX</b></span> was the top contributory factor in 2020<br />
-                                     accounting for <b>yyyy</b> people (range zzz - zzz) falling ill with TB</p>")
               									 )
-
-                             ),
-
+              									 ),
 
               									 fluidRow(
 

@@ -113,11 +113,125 @@ output$tb_deaths_rate <- renderInfoBox(
   )
 )
 
+# TB incidence
+output$tb_incidence_rate <- renderInfoBox(
+
+  infoBox(title = "TB incidence rate 2020",
+
+          value = paste0(ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]),
+                         " per 100 000 population"),
+
+          subtitle = HTML(paste0("Range ",
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k_lo"]),
+                                 "-",
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k_hi"]),
+                                 ". (",
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2019, "e_inc_100k"]),
+                                 " in 2019 ",
+                                 pct_change_arrow(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2019, "e_inc_100k"],
+                                                  pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]),
+                                 ")")
+          ),
+
+          icon = icon("head-side-cough"),
+
+          color = "green"
+  )
+)
+
+output$tb_incidence_num <- renderInfoBox(
+
+  infoBox(title = "Number falling ill with TB (incidence number) 2020",
+
+          value = paste0(ftb(pdata()$profile_estimates$e_inc_num),
+                         " (",
+                         relatable_number(pdata()$profile_estimates$e_inc_num),
+                         ")"
+          ),
+
+          subtitle = paste0("Range ",
+                            ftb(pdata()$profile_estimates$e_inc_num_lo),
+                            "-",
+                            ftb(pdata()$profile_estimates$e_inc_num_hi)),
+
+          icon = icon("head-side-cough"),
+
+          color = "green"
+  )
+)
+
+# Notification
+output$tb_notified_num <- renderInfoBox(
+
+  infoBox(title = "People newly diagnosed and reported (notified) with TB 2020",
+
+          value = ftb_na(pdata()$profile_data$c_newinc, int_spacer),
+
+          subtitle = HTML("(yyy yyyy in 2019 <b>&darr;</b> -z%)"),
+
+          icon = icon("bed"),
+
+          color = "black"
+  )
+)
+
+output$diagnosed_wrd <- renderInfoBox(
+
+  infoBox(title = "WHO-recommended rapid diagnostics 2020",
+
+          value = display_cap_pct(pdata()$profile_data$newinc_rdx,
+                                  pdata()$profile_data$c_newinc),
+
+          subtitle = "Percentage of people newly diagnosed with TB using WHO-recommended rapid diagnostics",
+
+          icon = icon("desktop"),
+
+          color = "black"
+  )
+)
+
+output$rrmdr_num <- renderInfoBox(
+
+  infoBox(title = "People diagnosed with drug-resistant TB 2020",
+
+          value = ftb_na(pdata()$profile_data$conf_rrmdr, int_spacer),
+
+          subtitle = HTML("(yyy in 2019 <b>&darr;</b> -z%)"),
+
+          icon = icon("stethoscope"),
+
+          color = "red"
+  )
+)
+
+output$mdr_tx_num <- renderInfoBox(
+
+  infoBox(title = "People started on treatment for drug-resistant TB 2020",
+
+          value = ftb_na(pdata()$profile_data$mdr_tx, int_spacer),
+
+          subtitle = HTML("(yyy in 2019 <b>&darr;</b> -z%)"),
+
+          icon = icon("bed"),
+
+          color = "red"
+  )
+)
 
 
+output$mdr_tx_short_num <- renderInfoBox(
 
+  infoBox(title = "WHO-recommended shorter treatment regimens 2020",
 
+          value = "xx%",
 
+          subtitle = "Percentage of people started on WHO-recommended shorter regimens for drug-resistant TB",
+
+          icon = icon("pills"),
+
+          color = "purple"
+  )
+)
 
 # TB cascade
 output$tb_cascade_text <- renderText(

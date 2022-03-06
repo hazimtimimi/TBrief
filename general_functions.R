@@ -70,6 +70,20 @@ relatable_number <- function(x){
   )
 }
 
+
+# Calculate % using numerator and denominator, format the output and cap at 100%
+display_cap_pct <- function(numerator, denominator) {
+
+  ifelse(is.na(numerator) | NZ(denominator) == 0,
+                "",
+                ifelse(numerator > denominator,
+                       ">100%",
+                       paste0(signif(numerator * 100 / denominator, 2), "%")
+                       )
+                )
+}
+
+
 # Calculate % change and describe it as increase or decrease
 pct_change_description <- function(x1, x2){
 
