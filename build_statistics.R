@@ -229,7 +229,79 @@ output$mdr_tx_short_num <- renderInfoBox(
 
           icon = icon("pills"),
 
-          color = "purple"
+          color = "red"
+  )
+)
+
+# Treatment success rates
+output$tsr <- renderText(
+
+  HTML(
+    paste0(
+      "<span style='font-size:150%;'><b>",
+      pdata()$profile_data$c_new_tsr,
+      "%</b></span> of those started TB treatment in 2019<br /><br /><br />",
+       "<span style='font-size:150%;'><b>",
+      pdata()$profile_data$c_mdr_tsr,
+      "%</b></span> of those started drug-resistant TB treatment in 2018"
+    )
+  )
+
+)
+
+
+# TPT
+output$tpt_num <- renderInfoBox(
+
+  infoBox(title = "People started on TB preventive treatment 2020",
+
+          value = ftb_na(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "hiv"],
+                               pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "contact_04"],
+                               pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "contact_5plus"]),
+                             na.rm = TRUE),
+                         int_spacer),
+
+          subtitle = HTML(paste0("(",
+                                 ftb_na(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "hiv"],
+                                              pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "contact_04"],
+                                              pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "contact_5plus"]),
+                                            na.rm = TRUE),
+                                        int_spacer),
+                                 " in 2019",
+                                 pct_change_arrow(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "hiv"],
+                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "contact_04"],
+                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "contact_5plus"]),
+                                                      na.rm = TRUE),
+                                                  sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "hiv"],
+                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "contact_04"],
+                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "contact_5plus"]),
+                                                      na.rm = TRUE)
+                                                  ),
+                                 ")")),
+
+          icon = icon("tablets"),
+
+          color = "green"
+  )
+)
+
+# Budget
+output$tb_budget <- renderInfoBox(
+
+  infoBox(title = "National TB budget 2021",
+
+          value = paste0(ftb(pdata()$profile_data$tot_req),
+                         " US$ million"),
+
+          subtitle = paste0(ftb(pdata()$profile_data$tot_gap),
+                            " US$ million (",
+                            display_cap_pct(pdata()$profile_data$tot_gap,
+                                            pdata()$profile_data$tot_req),
+                            ") of the budget was not funded"),
+
+          icon = icon("coins"),
+
+          color = "orange"
   )
 )
 

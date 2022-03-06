@@ -287,15 +287,9 @@ ui <- dashboardPage(
               									             tags$div(
               									                 style = "position: absolute; top: 20px; left: 1em; font-size:120%;",
 
-              									                 HTML(
-              									                     "<span style='font-size:150%;'><b>x%</b></span> of those started TB treatment in 2019<br />
-                                                                     <br /><br />
-                                                                     <span style='font-size:150%;'> <b>x%</b></span> of those started drug-resistant TB treatment in 2018"
-              									                 )
+              									                 htmlOutput(outputId = "tsr", inline = TRUE)
               									             )
-
               									         ),
-
               									     )
 
 
@@ -303,30 +297,30 @@ ui <- dashboardPage(
               									 ),
 
               									 fluidRow(
+              									     column(width = 6,
+              									            box(title = "People started on TB preventive treatment",
+              									                solidHeader = TRUE,
+              									                status = "success",
+              									                width = 12,
+              									                plotOutput(outputId = "tpt_chart", height = "200px")
+              									                ),
 
-              									   box(title = "Preventive treatment",
-              									       solidHeader = TRUE,
-              									       status = "info",
-              									       plotOutput(outputId = "tpt_chart", height = "200px"),
-              									       HTML("<p style='font-size:120%;'><b>2020 TB preventive treatment</b><br />
-                                   <span style='font-size:150%;'><b>yyyy</b></span> people in total<br/>
-                                   <b>+z%</b> vs 2019  <span style='color:#91A93E;'>&uarr;</span></p>
+              									            infoBoxOutput(outputId = "tpt_num", width = 12)
+              									     ),
 
-                                   <p style='font-size:120%;'>
-                                   <span style='font-size:150%;color:#ffc425;'><b>aaa</b></span> (<b>xx%</b>) people living with HIV<br/>
-                                   <span style='font-size:150%;color:#9fcd25;'><b>bbb</b></span> (<b>yy%</b>) household contacts aged under 5 years<br/>
-                                   <span style='font-size:150%;color:dark green;'><b>ccc</b></span> (<b>zz%</b>) household contacts aged 5 years and over")
-              									   ),
+              									     column(width = 6,
 
-              									   box(title = "Financing",
-              									       solidHeader = TRUE,
-              									       status = "info",
-              									       plotOutput(outputId = "budget_chart", height = "200px"),
+              									            box(title = "TB budget",
+              									                solidHeader = TRUE,
+              									                status = "warning",
+              									                width = 12,
+              									                plotOutput(outputId = "budget_chart", height = "200px")
+              									                ),
 
-              									       HTML("<p style='font-size:120%;'><b>2021 National TB budget</b><br /><br />
-                                     <span style='font-size:150%;color:#ffc425;'><b>zzz</b></span> of the xxx USD million national TB budget was funded<br />
-                                     <span style='font-size:150%;color:#D84D3F;'><b>z%</b></span> (<b>xxx</b> USD million) was not funded</p>")
-              									   )
+              									            infoBoxOutput(outputId = "tb_budget", width = 12)
+
+              									            )
+
 
               									 )
 

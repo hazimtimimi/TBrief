@@ -237,7 +237,7 @@ output$tpt_chart <- renderPlot({
     scale_x_continuous(name=element_blank(),
                        breaks = c(2015, dcyear-1)) +
 
-    scale_y_continuous(name = "Number started on treatment",
+    scale_y_continuous(name = "Number",
                        labels = function(x){ifelse(x %% 1 == 0, int_spacer(x),"")}) +
 
     scale_fill_manual(name=element_blank(),
@@ -306,7 +306,7 @@ output$budget_chart <-  renderPlot({
 
       scale_x_continuous(name=element_blank(), breaks = c(dcyear-4, dcyear)) +
 
-      ylab("TB budget\nUS$ millions") +
+      ylab("US$ millions") +
 
       gtbreport::theme_gtb() +
 
