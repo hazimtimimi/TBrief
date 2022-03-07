@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 0.3"
+app_version <- "Version 0.5"
 
 library(shiny)
 library(shinydashboard)
@@ -37,61 +37,6 @@ aggregate_groups <- aggregate_groups$groups
 # Load general, non-reactive functions
 source("general_functions.R")
 
-# Add a function to create a standard block for the UI with an image in a column of size 2
-# and text in a column of size 10, all within a column that will use up half of fixed row that
-# spans the full width of the web page. The web page will be made up of manny such blocks
-
-block_210 <- function(sub_title, image_name, text_name) {
-
-    column(width = 6,
-
-           HTML(sub_title),
-
-           fixedRow(
-               column(width = 2,
-                      HTML(paste0("<img src='", image_name, "'>"))
-               ),
-               column(width = 10,
-
-                      htmlOutput(outputId = text_name,
-                                 inline = TRUE)
-               )
-           )
-    )
-}
-
-# And a similar block, but now with a cascade of care horizontal bar chart placed in the background
-# with text written over it
-
-block_210_cascade <- function(sub_title, image_name, text_name, plot_name) {
-
-    column(width = 6,
-
-           HTML(sub_title),
-
-           fixedRow(
-               column(width = 2,
-                      HTML(paste0("<img src='", image_name, "'>"))
-               ),
-               column(width = 10,
-
-                      tags$div(style = "position: relative;",
-
-                               plotOutput(outputId = plot_name, height = "140px"),
-
-                               # Next DIV allows the text to appear over the chart image
-                               tags$div(style = "position: absolute; top: 20px;",
-
-                                        htmlOutput(outputId = text_name,
-                                                   inline = TRUE)
-                               )
-                      )
-               )
-           )
-    )
-}
-
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Web interface code
@@ -107,17 +52,14 @@ ui <- dashboardPage(
 
     fluidPage(title = "Summary of tuberculosis data",
 
-              # Add a link to the boostrap CSS Sandstone theme downloaded from
-              # https://bootswatch.com/3/sandstone/bootstrap.css
-              # and a link to a print-specific CSS to hide selectors and metadata and to
+              # ADD a link to a print-specific CSS to hide selectors and metadata and to
               # retain two columns when printing
               # and a tbrief-specific sylesheet for named elements
 
               tags$head(
 
                   tags$link(rel = "stylesheet", type = "text/css", href = "tbrief.css"),
-                  #tags$link(rel = "stylesheet", type = "text/css", href = "bootstrap.css"),
-                  #tags$link(rel = "stylesheet", type = "text/css", href = "boot_print.css", media="print")
+                  tags$link(rel = "stylesheet", type = "text/css", href = "boot_print.css", media="print")
               ),
 
               fluidRow(id="selectors",
@@ -187,7 +129,7 @@ ui <- dashboardPage(
 
                                box(title = "TB incidence rate 2020 vs 2015",
                                    solidHeader = TRUE,
-                                   status = "info",
+                                   status = "success",
                                    width = 4,
                                    htmlOutput(outputId = "achieved_incidence"),
                                    HTML("<h4>Target: 20% reduction<br />&nbsp;</h4>"),
@@ -196,7 +138,7 @@ ui <- dashboardPage(
 
                                box(title = "Catastrophic costs",
                                    solidHeader = TRUE,
-                                   status = "info",
+                                   status = "warning",
                                    width = 4,
                                    htmlOutput(outputId = "achieved_catast"),
                                    HTML("<h4>Target: 0% of people with TB facing catastrophic costs by 2020</h4>"),
@@ -326,97 +268,9 @@ ui <- dashboardPage(
 
               									 # End of indicators tab! ---------------------
 
-                    ),
-
-                    tabPanel("Icon-tastic!",
-
-                             # Start of icontastic tab! ---------------------
-
-                             fixedRow(id="tb_cascade",
-
-                                      column(width = 6,
-                                             HTML("<h3>People with TB</h3>"),
-
-                                             fixedRow(
-                                                 column(width = 2,
-                                                        HTML("<img src='tb@2x.png'>")),
-                                                 column(width = 10,
-
-                                                        tags$div(style = "position: relative;",
-
-                                                                 plotOutput(outputId = "tb_cascade_chart", height = "140px"),
-
-                                                                 # Next DIV allows the text to appear over the chart image
-                                                                 tags$div(style = "position: absolute;
-                                                                 top: 20px;",
-
-                                                                 htmlOutput(outputId = "tb_cascade_text",
-                                                                            inline = TRUE)
-                                                                 )
-                                                        )
-                                                 )
-                                             ),
+                    )
 
 
-                                             HTML("<h3>People who died from TB in 2020</h3>"),
-
-                                             fixedRow(
-                                                 column(width = 2,
-                                                        HTML("<img src='death@2x.png'>")),
-                                                 column(width = 10,
-
-                                                        htmlOutput(outputId = "deaths_text",
-                                                                   inline = TRUE)
-                                                 )
-                                             )
-                                      ),
-
-                                      block_210(sub_title = "<h3>Causes of people falling ill with TB in 2020</h3>",
-                                                image_name = "question@2x.png",
-                                                text_name = "attributable_cases"),
-
-                             ),
-
-                             fixedRow(id="tb_prevention",
-
-                                      block_210(sub_title = "<h3>People notified with TB in 2020</h3>",
-                                                image_name = "people@2x.png",
-                                                text_name = "notifs_text"),
-
-
-                                      block_210(sub_title = "<h3>Treatment to prevent TB provided in 2020</h3>",
-                                                image_name = "medicines@2x.png",
-                                                text_name = "tpt_text")
-
-                             ),
-
-                             fixedRow(id="drtbhiv_cascade",
-
-                                      block_210_cascade(sub_title = "<h3>People living with HIV</h3>",
-                                                        image_name = "ribbon@2x.png",
-                                                        text_name = "tbhiv_cascade_text",
-                                                        plot_name = "tbhiv_cascade_chart"),
-
-                                      block_210_cascade(sub_title = "<h3>People with drug-resistant TB</h3>",
-                                                        image_name = "clinical_a@2x.png",
-                                                        text_name = "drtb_cascade_text",
-                                                        plot_name = "drtb_cascade_chart")
-                             ),
-
-                             fixedRow(id="tb_finance",
-
-                                      block_210(sub_title = "<h3>National TB programme budget for 2021</h3>",
-                                                image_name = "coins@2x.png",
-                                                text_name = "finance_text"),
-
-                                      block_210(sub_title = "<h3>Survey of TB patient costs</h3>",
-                                                image_name = "health_worker_form@2x.png",
-                                                text_name = "pcs_text")
-                             )
-
-                             # End of icontastic tab! ---------------------
-
-                             )
                     ),
 
 
@@ -506,13 +360,9 @@ server <- function(input, output, session) {
 
     source("build_header.R", local = TRUE)
 
-    source("build_cascades.R", local = TRUE)
-
     source("build_statistics.R", local = TRUE)
 
     source("build_charts.R", local = TRUE)
-
-    source("create_horizontal_bars.r", local = TRUE)
 
 
     # Add the footer that goes on every page
