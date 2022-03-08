@@ -13,7 +13,7 @@ output$milestone_deaths <- renderInfoBox(
           subtitle = "(Target is 35% reduction)",
           value = pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"],
                                          pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
-          icon = icon("skull")
+          icon = icon("people-carry")
           )
 )
 
@@ -95,7 +95,7 @@ output$tb_deaths_num <- renderInfoBox(
                                  ")")
                           ),
 
-          icon = icon("skull")
+          icon = icon("people-carry")
   )
 )
 
@@ -111,7 +111,7 @@ output$tb_deaths_rate <- renderInfoBox(
                             "-",
                             ftb(pdata()$profile_estimates$e_mort_100k_hi)),
 
-          icon = icon("skull")
+          icon = icon("people-carry")
   )
 )
 
