@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 0.5"
+app_version <- "Version 0.6"
 
 library(shiny)
 library(shinydashboard)
@@ -97,7 +97,7 @@ ui <- dashboardPage(
         fluidRow(id="main_content",
 
                 textOutput(outputId = "main_heading", container = h1),
-                textOutput(outputId = "population", container = h5),
+                textOutput(outputId = "population", container = h3),
                 htmlOutput(outputId = "detailed_profile"),
 
 

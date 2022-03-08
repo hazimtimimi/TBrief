@@ -36,8 +36,8 @@ output$detailed_profile <- renderText({
         url <- paste0(base_url, '?_inputs_&entity_type="country"&lan="EN"&iso2="', input$iso2, '"')
     }
 
-    paste("<p>See also <a href='",
+    paste("<h3>See also <a href='",
           url,
-          "' target='_blank'>the detailed TB profile</a></p>")
+          "' target='_blank'>the detailed TB profile</a><br />&nbsp;</h3>")
 
 })
