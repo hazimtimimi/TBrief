@@ -31,43 +31,33 @@ ftb_na <- function(x, fn=gtbreport::ftb) {
 }
 
 # Convert an annual number to number per day
-relatable_num <- function(x){
-  ifelse(length(x)==0,
-         "",
-         ifelse(is.na(x),
-                "",
-                ifelse(x>=365*24*60,
-                       paste0("\n(one every\n", round(365*24*60*60/x), " seconds)"),
-                       ifelse(x>=365*24,
-                              paste0("\n(one every\n", round(365*24*60/x), " minutes)"),
-                              ifelse(x>=365,
-                                     paste0("\n(one every\n", round(8760/x), " hours)"),
-                                     paste0("\n(one every\n", round(365/x), " days)")
-                                     )
-                              )
-                       )
-                )
-         )
+relatable_number <- function(x){
+
+  result <- ifelse(length(x)==0,
+                   "",
+                   ifelse(is.na(x),
+                          "",
+                          ifelse(x>=365*24*60,
+                                 paste0("one person every ", round(365*24*60*60/x), " seconds"),
+                                 ifelse(x>=365*24,
+                                        paste0("one person every ", round(365*24*60/x), " minutes"),
+                                        ifelse(x>=365,
+                                               paste0("one person every ", round(365*24/x), " hours"),
+                                               paste0("one person every ", round(365/x), " days")
+                                        )
+                                 )
+                          )
+                   )
+            )
+
+if (length(grep(" 1 ", result)) == 1) {
+  # remove the number " 1 " and the final s of the result string
+  # to avoid things like "one person every 1 days"
+  result <- sub(" 1 ", " ", result)
+  result <- substr(result, 1, nchar(result) - 1)
 }
 
-# Convert an annual number to number per day
-relatable_number <- function(x){
-  ifelse(length(x)==0,
-         "",
-         ifelse(is.na(x),
-                "",
-                ifelse(x>=365*24*60,
-                       paste0("one person every ", round(365*24*60*60/x), " seconds"),
-                       ifelse(x>=365*24,
-                              paste0("one person every ", round(365*24*60/x), " minutes"),
-                              ifelse(x>=365,
-                                     paste0("one person every ", round(8760/x), " hours"),
-                                     paste0("one person every ", round(365/x), " days")
-                              )
-                       )
-                )
-         )
-  )
+  return(result)
 }
 
 
