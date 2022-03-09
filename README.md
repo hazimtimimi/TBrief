@@ -8,7 +8,7 @@ Show a summary of information about tuberculosis (TB) for a chosen country, area
 
 ## Components and data source
 
-This is an app built using [Shiny](https://shiny.rstudio.com/) and hosted at [shinyapps.io](https://worldhealthorg.shinyapps.io/TBrief/). It uses data published by the World Health Organization's [Global Tuberculosis Programme](https://www.who.int/teams/global-tuberculosis-programme/data).
+This is an app built using [Shiny](https://shiny.rstudio.com/) using the [Shiny Dashboards package](https://rstudio.github.io/shinydashboard/index.html) and hosted at [shinyapps.io](https://worldhealthorg.shinyapps.io/TBrief/). It uses data published by the World Health Organization's [Global Tuberculosis Programme](https://www.who.int/teams/global-tuberculosis-programme/data).
 
 The app pulls data directly from the global TB database:
 
@@ -21,9 +21,6 @@ The app pulls data directly from the global TB database:
 
 5. https://extranet.who.int/tme/generateJSON.asp?ds=group_data&group_code=XXX (where XXX is a code for a WHO region or the global group). This returns all the data that appear in the tables and charts for the group of countries and areas.
 
-## Icons
-
-Thanks to [Health icons](https://healthicons.org/)!
 
 ## Data updates
 
