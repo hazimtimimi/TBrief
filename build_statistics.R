@@ -2,6 +2,14 @@
 # Build outputs showing numbers
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+output$population <- renderInfoBox(
+
+  infoBox(title = paste("Population", dcyear-1),
+          value = paste(int_spacer(pdata()$profile_estimates[, "e_pop_num"]/1e6), "million"),
+          icon = icon("users"),
+          color = "purple"
+  )
+)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # End TB Strategy milestones

@@ -172,7 +172,6 @@ output$mortality_chart <-  renderPlot({
   mort_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"] * 0.65
 
   pdata()$epi_timeseries %>%
-    # filter(year >= 2015) %>%
     ggplot(aes(x=year, y=e_mort_num, ymin=0)) +
     geom_line(size=3,
               colour=gtbreport::palette_gtb("mort")) +
@@ -191,7 +190,9 @@ output$mortality_chart <-  renderPlot({
 
     scale_x_continuous(name=element_blank(), breaks = c(2000, dcyear-1)) +
 
-    ylab("Number per year") +
+    scale_y_continuous(name = "Number per year",
+                       limits = c(0, NA),
+                       labels = function(x){ifelse(x %% 1 == 0, int_spacer(x),"")}) +
 
     gtbreport::theme_gtb() +
 
@@ -218,7 +219,6 @@ output$incidence_chart <-  renderPlot({
   inc_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"] * 0.8
 
   pdata()$epi_timeseries %>%
-    #filter(year >= 2015) %>%
 
     ggplot() +
 
@@ -245,9 +245,9 @@ output$incidence_chart <-  renderPlot({
 
     scale_x_continuous(name=element_blank(), breaks = c(2000, dcyear-1)) +
 
-    scale_y_continuous(limits = c(0, NA)) +
-
-    ylab("Number\nper 100 000 per year") +
+    scale_y_continuous(name = "Number\nper 100 000 per year",
+                       limits = c(0, NA),
+                       labels = function(x){ifelse(x %% 1 == 0, int_spacer(x),"")}) +
 
     gtbreport::theme_gtb() +
 
@@ -463,7 +463,8 @@ output$budget_chart <-  renderPlot({
 
       scale_x_continuous(name=element_blank(), breaks = c(dcyear-4, dcyear)) +
 
-      ylab("US$ millions") +
+      scale_y_continuous(name = "US$ millions",
+                         labels = function(x){ifelse(x %% 1 == 0, int_spacer(x),"")}) +
 
       gtbreport::theme_gtb() +
 
