@@ -1,23 +1,21 @@
 /* Styles for specific elements and classes */
 
-/* Statistics as bolded numbers */
-.stats {
-  font-size: 130%;
-  font-weight: bold;
-  float: left;
-  margin-right: 10px;
-  margin-left: 20px;
-  width: 80px;
-  text-align: right;
-  white-space: nowrap;
+#entitytypes {
+  color: #ffffff;
 }
 
-
-/* named rows */
-#tb_cascade, #tb_prevention, #drtbhiv_cascade, #tb_finance {
-  border-bottom: 0.25px solid #a2cfde;
+#entities, #entitytypes {
+  padding-left: 20px;
+  background-color: #367fa9;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
 }
 
+#milestones {
+  border-bottom: 0.25px solid #aaaaaa;
+  margin-bottom: 10px;
+}
 
 #generation {
   margin-top: 10px;

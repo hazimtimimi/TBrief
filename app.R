@@ -59,29 +59,14 @@ ui <- dashboardPage(
 
             tags$head(
                 tags$link(rel = "stylesheet", type = "text/css", href = "tbrief.css"),
-                tags$link(
-                    rel = "stylesheet",
-                    type = "text/css",
-                    href = "boot_print.css",
-                    media = "print"
-                )
+                tags$link(rel = "stylesheet", type = "text/css", href = "boot_print.css", media = "print")
             ),
 
             fluidRow(id = "selectors",
 
                      column(
                          width = 2,
-                         tags$div(
-                             style = "padding-left: 20px;
-                                            color: #ffffff;
-                                            background-color: #367fa9;
-                                            margin-bottom: 20px;
-                                            border: 1px solid transparent;
-                                            border-radius: 4px;",
-
                              uiOutput(outputId = "entitytypes")
-
-                         )
                      ),
 
                      # Choose whether to show the list of countries or the list of groups
@@ -89,26 +74,22 @@ ui <- dashboardPage(
 
                      column(
                          width = 10,
-                         tags$div(
-                             style = "padding-left: 20px;
-                                            background-color: #367fa9;
-                                            margin-bottom: 20px;
-                                            border: 1px solid transparent;
-                                            border-radius: 4px;",
-
                              uiOutput(outputId = "entities")
-
-                         )
-                     )),
+                     )
+                ),
 
 
             fluidRow(
-                id = "main_content",
+                id = "header",
 
                 # Header  ----
                 textOutput(outputId = "main_heading", container = h1),
                 infoBoxOutput(outputId = "population"),
-                htmlOutput(outputId = "detailed_profile"),
+                htmlOutput(outputId = "detailed_profile")
+            ),
+
+            fluidRow(
+                id = "milestones",
 
                 # Milestones  ----
 
@@ -116,9 +97,8 @@ ui <- dashboardPage(
 
                 infoBoxOutput(outputId = "milestone_deaths"),
                 infoBoxOutput(outputId = "milestone_incidence"),
-                infoBoxOutput(outputId = "milestone_catast"),
-
-                HTML("<hr style='border: 0.5px solid #aaaaaa;' />"),
+                infoBoxOutput(outputId = "milestone_catast")
+                ),
 
                 # Indicators section ----
 
@@ -247,7 +227,7 @@ ui <- dashboardPage(
                       <a href='https://play.google.com/store/apps/details?id=uk.co.adappt.whotbreport&hl=en_us' target='_blank'>Android</a>
                       and as <a href='https://www.who.int/teams/global-tuberculosis-programme/data' target='_blank'>CSV files</a>.</i><br /><br /></div>"))
 
-            )
+
         )
     )
 )
