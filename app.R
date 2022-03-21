@@ -59,7 +59,7 @@ ui <- dashboardPage(
 
             tags$head(
                 tags$link(rel = "stylesheet", type = "text/css", href = "tbrief.css"),
-                tags$link(rel = "stylesheet", type = "text/css", href = "boot_print.css", media = "print")
+                tags$link(rel = "stylesheet", type = "text/css", href = "tbrief_print.css", media = "print")
             ),
 
             fluidRow(id = "selectors",
