@@ -51,8 +51,8 @@ img {
 .box-body {
 	max-height:90pt;
 	height: 60%;
-	padding-top:0pt;
-	padding-bottom:0pt;
+	padding-top:0;
+	padding-bottom:0;
 }
 
 .box-header .box-title, .box-header>.fa, .box-header>.glyphicon, .box-header>.ion {
@@ -71,7 +71,7 @@ img {
 }
 
 .info-box-content {
-	padding:3.75pt 0px 0px 3.75pt;
+	padding:3.75pt 0 0 3.75pt;
 	margin-left:35pt
 }
 

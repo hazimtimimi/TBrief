@@ -5,7 +5,7 @@
 output$population <- renderInfoBox(
 
   infoBox(title = paste("Population", dcyear-1),
-          value = paste(int_spacer(pdata()$profile_estimates[, "e_pop_num"]/1e6), "million"),
+          value = paste(ftb_na(pdata()$profile_estimates[, "e_pop_num"]/1e6), "million"),
           icon = icon("users"),
           color = "purple"
   )
@@ -177,11 +177,17 @@ output$tb_notified_num <- renderInfoBox(
 
           value = ftb_na(pdata()$profile_data$c_newinc, int_spacer),
 
-          subtitle = HTML("(yyy yyyy in 2019 <b>&darr;</b> -z%)"),
+          subtitle = HTML(paste0("(",
+                                 ftb_na(pdata()$profile_data$c_newinc_ym1, int_spacer),
+                          " in 2019 ",
+                          pct_change_arrow(pdata()$profile_data$c_newinc_ym1,
+                                           pdata()$profile_data$c_newinc),
+                          ")")
+                      ),
 
           icon = icon("bed"),
 
-          color = "black"
+          color = "teal"
   )
 )
 
@@ -196,7 +202,7 @@ output$diagnosed_wrd <- renderInfoBox(
 
           icon = icon("desktop"),
 
-          color = "black"
+          color = "teal"
   )
 )
 
@@ -206,7 +212,13 @@ output$rrmdr_num <- renderInfoBox(
 
           value = ftb_na(pdata()$profile_data$conf_rrmdr, int_spacer),
 
-          subtitle = HTML("(yyy in 2019 <b>&darr;</b> -z%)"),
+          subtitle = HTML(paste0("(",
+                                 ftb_na(pdata()$profile_data$conf_rrmdr_ym1, int_spacer),
+                                 " in 2019 ",
+                                 pct_change_arrow(pdata()$profile_data$conf_rrmdr_ym1,
+                                                  pdata()$profile_data$conf_rrmdr),
+                                 ")")
+          ),
 
           icon = icon("stethoscope"),
 
@@ -220,7 +232,13 @@ output$mdr_tx_num <- renderInfoBox(
 
           value = ftb_na(pdata()$profile_data$mdr_tx, int_spacer),
 
-          subtitle = HTML("(yyy in 2019 <b>&darr;</b> -z%)"),
+          subtitle = HTML(paste0("(",
+                                 ftb_na(pdata()$profile_data$mdr_tx_ym1, int_spacer),
+                                 " in 2019 ",
+                                 pct_change_arrow(pdata()$profile_data$mdr_tx_ym1,
+                                                  pdata()$profile_data$mdr_tx),
+                                 ")")
+          ),
 
           icon = icon("bed"),
 
@@ -233,7 +251,8 @@ output$mdr_tx_short_num <- renderInfoBox(
 
   infoBox(title = "WHO-recommended shorter treatment regimens 2020",
 
-          value = "xx%",
+          value = display_cap_pct(pdata()$profile_data$mdr_alloral_short_tx,
+                                  pdata()$profile_data$mdr_tx),
 
           subtitle = "Percentage of people started on WHO-recommended shorter regimens for drug-resistant TB",
 
