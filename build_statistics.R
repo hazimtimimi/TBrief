@@ -266,15 +266,17 @@ output$mdr_tx_short_num <- renderInfoBox(
 output$tsr <- renderText(
 
   HTML(
-    paste0(
-      "<span style='font-size:150%;'><b>",
-      pdata()$profile_data$c_new_tsr,
-      "%</b></span> of those started TB treatment in 2019<br /><br /><br />",
-       "<span style='font-size:150%;'><b>",
-      pdata()$profile_data$c_mdr_tsr,
-      "%</b></span> of those started drug-resistant TB treatment in 2018"
+    ifelse(isTruthy(pdata()$profile_data$c_new_tsr),
+           paste0(
+             "<span style='font-size:150%;'><b>",
+             pdata()$profile_data$c_new_tsr,
+             "%</b></span> of those started TB treatment in 2019<br /><br /><br />",
+             "<span style='font-size:150%;'><b>",
+             pdata()$profile_data$c_mdr_tsr,
+             "%</b></span> of those started drug-resistant TB treatment in 2018"
+           ),
+           "")
     )
-  )
 
 )
 

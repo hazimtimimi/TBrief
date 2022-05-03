@@ -376,6 +376,11 @@ output$tpt_chart <- renderPlot({
   # Make sure there are data to plot
   req(pdata()$tpt_timeseries)
 
+  #Make sure there are some non-null values in the dataframe
+  req(sum(!is.na(pdata()$tpt_timeseries$hiv)) +
+        sum(!is.na(pdata()$tpt_timeseries$contact_04)) +
+        sum(!is.na(pdata()$tpt_timeseries$contact_5plus)) > 0)
+
   pdata()$tpt_timeseries %>%
 
     # flip to long format for plotting
@@ -430,56 +435,44 @@ output$budget_chart <-  renderPlot({
 
   # First make sure there are some data to display
   # There will only be the year column if no data, so check number of columns
+  req(ncol(pdata()$profile_finance) > 1)
 
-  ndata_cols <- ncol(pdata()$profile_finance) - 1
+  pdata()$profile_finance %>%
 
-  # Only plot the data if have at least one year with data
+    # Calculate the amount funded
+    mutate(a_funded = NZ(a_domestic) + NZ(b_international)) %>%
 
-  if (ndata_cols > 0){
+    select(-a_domestic, -b_international) %>%
 
-    plotobj <- pdata()$profile_finance %>%
+    # Convert to long format
+    pivot_longer(cols = -year,
+                 names_to = "budget",
+                 values_to = "b_tot",
+                 # drop empty values
+                 values_drop_na = TRUE) %>%
 
-      # Calculate the amount funded
-      mutate(a_funded = NZ(a_domestic) + NZ(b_international)) %>%
+    ggplot(aes(x=year, y=b_tot, fill = budget)) +
 
-      select(-a_domestic, -b_international) %>%
+    geom_col(position = position_stack(reverse = TRUE)) +
 
-      # Convert to long format
-      pivot_longer(cols = -year,
-                   names_to = "budget",
-                   values_to = "b_tot",
-                   # drop empty values
-                   values_drop_na = TRUE) %>%
+    scale_fill_manual("",
+                      values = c("a_funded" =  "#ffc425",
+                                 "c_gap"    =  "#D84D3F"),
+                      labels = c("a_funded" =  "Funded",
+                                 "c_gap"    =  "Not funded")) +
 
-      ggplot(aes(x=year, y=b_tot, fill = budget)) +
+    scale_x_continuous(name=element_blank(), breaks = c(dcyear-4, dcyear)) +
 
-      geom_col(position = position_stack(reverse = TRUE)) +
+    scale_y_continuous(name = "US$ millions",
+                       labels = function(x){ifelse(x %% 1 == 0, int_spacer(x),"")}) +
 
-      scale_fill_manual("",
-                        values = c("a_funded" =  "#ffc425",
-                                   "c_gap"    =  "#D84D3F"),
-                        labels = c("a_funded" =  "Funded",
-                                   "c_gap"    =  "Not funded")) +
+    gtbreport::theme_gtb() +
 
-      scale_x_continuous(name=element_blank(), breaks = c(dcyear-4, dcyear)) +
-
-      scale_y_continuous(name = "US$ millions",
-                         labels = function(x){ifelse(x %% 1 == 0, int_spacer(x),"")}) +
-
-      gtbreport::theme_gtb() +
-
-      # Get rid of annoying x-axis line and ticks and reduce bottom margin
-      theme(axis.line.x = ggplot2::element_blank(),
-            axis.ticks.x = element_blank(),
-            plot.margin = ggplot2::margin(1, 5, 1, 5),
-            # reduce space between x-axis and bottom legend
-            legend.box.margin = margin(-30))
-
-  } else {
-
-    plotobj <- NA
-  }
-
-  return(plotobj)
+    # Get rid of annoying x-axis line and ticks and reduce bottom margin
+    theme(axis.line.x = ggplot2::element_blank(),
+          axis.ticks.x = element_blank(),
+          plot.margin = ggplot2::margin(1, 5, 1, 5),
+          # reduce space between x-axis and bottom legend
+          legend.box.margin = margin(-30))
 
 })

@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 0.7"
+app_version <- "Version 0.8"
 
 library(shiny)
 library(shinydashboard)
