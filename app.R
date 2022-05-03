@@ -81,24 +81,32 @@ ui <- dashboardPage(
 
             fluidRow(
                 id = "header",
+                #Add a full width column so that contents align with those of subsequent rows
+                column(
+                    width = 12,
 
-                # Header  ----
-                textOutput(outputId = "main_heading", container = h1),
-                infoBoxOutput(outputId = "population"),
-                htmlOutput(outputId = "detailed_profile")
+                    # Header  ----
+                    textOutput(outputId = "main_heading", container = h1),
+                    infoBoxOutput(outputId = "population"),
+                    htmlOutput(outputId = "detailed_profile")
+                )
             ),
 
             fluidRow(
                 id = "milestones",
+                #Add a full width column so that contents align with those of subsequent rows
+                column(
+                    width = 12,
 
-                # Milestones  ----
+                    # Milestones  ----
 
-                HTML("<h2>End TB Strategy milestones for 2020</h2>"),
+                    HTML("<h2>End TB Strategy milestones for 2020</h2>"),
 
-                infoBoxOutput(outputId = "milestone_deaths"),
-                infoBoxOutput(outputId = "milestone_incidence"),
-                infoBoxOutput(outputId = "milestone_catast")
-                ),
+                    infoBoxOutput(outputId = "milestone_deaths"),
+                    infoBoxOutput(outputId = "milestone_incidence"),
+                    infoBoxOutput(outputId = "milestone_catast")
+                )
+            ),
 
                 # Indicators section ----
 
