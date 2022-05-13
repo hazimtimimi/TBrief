@@ -1,10 +1,10 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Display TB country and group (regional/global) summary data on TB using JSON data
 # retrieved from the WHO global tuberculosis database
-# Hazim Timimi, November 2021
+# Hazim Timimi, November 2021 - May 2022
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 0.8"
+app_version <- "Version 1.0"
 
 library(shiny)
 library(shinydashboard)
@@ -166,30 +166,36 @@ ui <- dashboardPage(
                     column(
                         width = 6,
 
-                        box(
-                            title = "Why did people fall ill with TB in 2020?",
-                            solidHeader = TRUE,
-                            status = "success",
-                            width = 12,
-                            plotOutput(outputId = "rf_chart", height = "200px")
+                        # The cases attributable to 5 risk factors estimates is not shown for all countries
+                        conditionalPanel(condition = "output.show_attributable_cases == 1",
+                                         box(
+                                             title = "Why did people fall ill with TB in 2020?",
+                                             solidHeader = TRUE,
+                                             status = "success",
+                                             width = 12,
+                                             plotOutput(outputId = "rf_chart", height = "200px")
+                                         )
                         ),
 
-                        box(
-                            title = "TB treatment success",
-                            solidHeader = TRUE,
-                            status = "primary",
-                            width = 12,
+                        # Hide treatment success rate chart if there are no data to show
+                        conditionalPanel(condition = "output.show_outcomes == 1",
+                                         box(
+                                             title = "TB treatment success",
+                                             solidHeader = TRUE,
+                                             status = "primary",
+                                             width = 12,
 
-                            tags$div(
-                                style = "position: relative;",
+                                             tags$div(
+                                                 style = "position: relative;",
 
-                                plotOutput(outputId =  "tsr_chart", height = "170px"),
+                                                 plotOutput(outputId =  "tsr_chart", height = "170px"),
 
-                                # Next DIV allows the text to appear over the chart image
-                                tags$div(style = "position: absolute; top: 20px; left: 1em; font-size:120%;",
+                                                 # Next DIV allows the text to appear over the chart image
+                                                 tags$div(style = "position: absolute; top: 20px; left: 1em; font-size:120%;",
 
-                                         htmlOutput(outputId = "tsr", inline = TRUE))
-                            ),
+                                                          htmlOutput(outputId = "tsr", inline = TRUE))
+                                             ),
+                                         )
                         )
                     )
                 ),
@@ -198,28 +204,35 @@ ui <- dashboardPage(
                 fluidRow(
                     column(
                         width = 6,
-                        box(
-                            title = "People started on TB preventive treatment",
-                            solidHeader = TRUE,
-                            status = "success",
-                            width = 12,
-                            plotOutput(outputId = "tpt_chart", height = "200px")
+                        # Hide the TPT chart if there are no data to show
+                        conditionalPanel(condition = "output.show_tpt == 1",
+                                         box(
+                                             title = "People started on TB preventive treatment",
+                                             solidHeader = TRUE,
+                                             status = "success",
+                                             width = 12,
+                                             plotOutput(outputId = "tpt_chart", height = "200px")
+                                         )
                         ),
 
                         infoBoxOutput(outputId = "tpt_num", width = 12)
+
                     ),
 
                     column(
                         width = 6,
-                        box(
-                            title = "TB budget",
-                            solidHeader = TRUE,
-                            status = "warning",
-                            width = 12,
-                            plotOutput(outputId = "budget_chart", height = "200px")
-                        ),
+                        # The TB financing information is not shown for all countries
+                        conditionalPanel(condition = "output.show_finance == 1",
+                                         box(
+                                             title = "TB budget",
+                                             solidHeader = TRUE,
+                                             status = "warning",
+                                             width = 12,
+                                             plotOutput(outputId = "budget_chart", height = "200px")
+                                         ),
 
-                        infoBoxOutput(outputId = "tb_budget", width = 12)
+                                         infoBoxOutput(outputId = "tb_budget", width = 12)
+                        )
                     )
                 ),
 
@@ -340,6 +353,97 @@ server <- function(input, output, session) {
     source("build_statistics.R", local = TRUE)
 
     source("build_charts.R", local = TRUE)
+
+    # Show or hide the cases attributable to 5 risk factors
+    # Some entities don't have these estimates and the attributable_cases
+    # part of the profile data will be null rather than a data frame.
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    output$show_attributable_cases <- reactive ({
+
+        req(pdata()$attributable_cases)
+
+        if (is.data.frame(pdata()$attributable_cases)){
+            result <- 1
+        } else {
+            result <- 0
+        }
+
+        return(result)
+    })
+
+
+    # Need this to make sure browser can switch attributable cases  elements back on again if hidden
+    outputOptions(output, "show_attributable_cases", suspendWhenHidden = FALSE)
+
+    # Hide the treatment success rates chart if there are no data to show
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    output$show_outcomes <- reactive ({
+
+        req(pdata()$profile_data$c_new_tsr)
+
+        if (!is.na(pdata()$profile_data$c_new_tsr)){
+            result <- 1
+        } else {
+            result <- 0
+        }
+
+        return(result)
+    })
+
+
+    # Need this to make sure browser can switch success rate elements back on again if hidden
+    outputOptions(output, "show_outcomes", suspendWhenHidden = FALSE)
+
+
+    # Hide the TPT chart if there are no data to show
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    output$show_tpt <- reactive ({
+
+        req(pdata()$tpt_timeseries)
+
+        # Make sure total number on TPT is > 0
+
+        tpt_tot <- pdata()$tpt_timeseries %>%
+            summarise(across(-year, sum, na.rm = TRUE)) %>%
+            rowSums(na.rm = TRUE)
+
+        if (tpt_tot > 0){
+            result <- 1
+        } else {
+            result <- 0
+        }
+
+        return(result)
+    })
+
+
+    # Need this to make sure browser can switch the TPT chart back on again if hidden
+    outputOptions(output, "show_tpt", suspendWhenHidden = FALSE)
+
+
+    # Show or hide the finance data depending on the country selected
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    output$show_finance <- reactive({
+
+        req(pdata()$profile_properties)
+
+        if (isTRUE(pdata()$profile_properties[, "publish_finance_profile"])){
+            result <- 1
+
+        } else {
+            result <- 0
+        }
+        return(result)
+    })
+
+    # Need this to make sure browser can switch Finance elements back on again if hidden
+    outputOptions(output, "show_finance", suspendWhenHidden = FALSE)
+
+
 
     # Footer: date and attribution
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -49,32 +49,6 @@ output$milestone_catast <- renderInfoBox(
           )
 )
 
-output$achieved_deaths <- renderText(
-
-  HTML(paste("<h4>Achieved: <span style='font-size:120%; font-weight:bold;'>",
-        pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"],
-                               pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
-        "</span></h4>"))
-)
-
-output$achieved_incidence <- renderText(
-
-  HTML(paste("<h4>Achieved: <span style='font-size:120%; font-weight:bold;'>",
-             pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"],
-                                    pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]),
-             "</span></h4>"))
-)
-
-output$achieved_catast <- renderText(
-
-  HTML(paste("<h4>Achieved: <span style='font-size:120%; font-weight:bold;'>",
-             ifelse(is.na(pdata()$profile_data[, "catast_pct"]),
-                    "No data",
-                    paste0(signif(pdata()$profile_data[, "catast_pct"], 2), "%")
-             ),
-             "</span></h4>"))
-)
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Indicators

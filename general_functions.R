@@ -95,7 +95,7 @@ pct_change_description <- function(x1, x2){
 pct_change_arrow <- function(x1, x2){
 
   ifelse(NZ(x1)==0 | is.na(x2),
-         "No data",
+         "",
          ifelse(x1 == x2,
                 "<b>&harr;</b> 0%",
                 paste0(ifelse(x2 <= x1,
