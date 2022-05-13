@@ -431,7 +431,7 @@ server <- function(input, output, session) {
 
         req(pdata()$profile_properties)
 
-        if (isTRUE(pdata()$profile_properties[, "publish_finance_profile"])){
+        if (isTRUE(pdata()$profile_properties[, "dc_finance_display"])){
             result <- 1
 
         } else {
