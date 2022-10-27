@@ -88,7 +88,7 @@ output$incidence_milestone_bar <-  renderPlot({
                          # If estimate is not available pretend achievement is 0%
                          0,
                          (pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"] -
-                            pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]) * 100/
+                            pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_inc_100k"]) * 100/
                            pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"])
 
   inc_achieved_text <- ifelse(is.na(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"]),
@@ -116,7 +116,7 @@ output$deaths_milestone_bar <-  renderPlot({
                             # If estimate is not available pretend achievement is 0%
                             0,
                             (pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"] -
-                               pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]) * 100/
+                               pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num"]) * 100/
                               pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"])
 
   deaths_achieved_text <- ifelse(is.na(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"]),
@@ -436,6 +436,9 @@ output$budget_chart <-  renderPlot({
   # First make sure there are some data to display
   # There will only be the year column if no data, so check number of columns
   req(ncol(pdata()$profile_finance) > 1)
+
+  # Additional check for aggregates -- variable names are different
+  req(check_entity_type(input$entity_type) != "group")
 
   pdata()$profile_finance %>%
 

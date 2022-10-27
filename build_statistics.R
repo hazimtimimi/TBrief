@@ -17,20 +17,20 @@ output$population <- renderInfoBox(
 
 output$milestone_deaths <- renderInfoBox(
 
-  infoBox(title = "TB deaths 2020 vs 2015",
-          subtitle = "(Target is 35% reduction)",
+  infoBox(title = paste("TB deaths", dcyear-1, "vs 2015"),
+          subtitle = "(Target is 35% reduction by 2020)",
           value = pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"],
-                                         pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+                                         pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num"]),
           icon = icon("people-carry")
           )
 )
 
 output$milestone_incidence <- renderInfoBox(
 
-  infoBox(title = "TB incidence 2020 vs 2015",
-          subtitle = "(Target is 20% reduction)",
+  infoBox(title = paste("TB incidence", dcyear-1, "vs 2015"),
+          subtitle = "(Target is 20% reduction by 2020)",
           value = pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"],
-                                         pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]),
+                                         pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_inc_100k"]),
           icon = icon("head-side-cough"),
           color = "green"
           )
@@ -57,23 +57,23 @@ output$milestone_catast <- renderInfoBox(
 # TB deaths
 output$tb_deaths_num <- renderInfoBox(
 
-  infoBox(title = "Number of TB deaths 2020",
+  infoBox(title = paste("Number of TB deaths", dcyear-1),
 
-          value = paste0(ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+          value = paste0(ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num"]),
                         " (",
-                        relatable_number(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+                        relatable_number(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num"]),
                         ")"
                         ),
 
           subtitle = HTML(paste0("Range ",
-                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num_lo"]),
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num_lo"]),
                                  "-",
-                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num_hi"]),
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num_hi"]),
                                  ". (",
-                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2019, "e_mort_num"]),
-                                 " in 2019 ",
-                                 pct_change_arrow(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2019, "e_mort_num"],
-                                                  pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_mort_num"]),
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-2, "e_mort_num"]),
+                                 " in ", dcyear-2, " ",
+                                 pct_change_arrow(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-2, "e_mort_num"],
+                                                  pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num"]),
                                  ")")
                           ),
 
@@ -83,7 +83,7 @@ output$tb_deaths_num <- renderInfoBox(
 
 output$tb_deaths_rate <- renderInfoBox(
 
-  infoBox(title = "TB death rate 2020",
+  infoBox(title = paste("TB death rate", dcyear-1),
 
           value = paste0(ftb(pdata()$profile_estimates$e_mort_100k),
                          " per 100 000 population"),
@@ -100,20 +100,20 @@ output$tb_deaths_rate <- renderInfoBox(
 # TB incidence
 output$tb_incidence_rate <- renderInfoBox(
 
-  infoBox(title = "TB incidence rate 2020",
+  infoBox(title = paste("TB incidence rate", dcyear-1),
 
-          value = paste0(ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]),
+          value = paste0(ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_inc_100k"]),
                          " per 100 000 population"),
 
           subtitle = HTML(paste0("Range ",
-                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k_lo"]),
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_inc_100k_lo"]),
                                  "-",
-                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k_hi"]),
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_inc_100k_hi"]),
                                  ". (",
-                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2019, "e_inc_100k"]),
-                                 " in 2019 ",
-                                 pct_change_arrow(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2019, "e_inc_100k"],
-                                                  pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2020, "e_inc_100k"]),
+                                 ftb(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-2, "e_inc_100k"]),
+                                 " in ", dcyear-2, " ",
+                                 pct_change_arrow(pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-2, "e_inc_100k"],
+                                                  pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_inc_100k"]),
                                  ")")
           ),
 
@@ -125,7 +125,7 @@ output$tb_incidence_rate <- renderInfoBox(
 
 output$tb_incidence_num <- renderInfoBox(
 
-  infoBox(title = "Number falling ill with TB (incidence number) 2020",
+  infoBox(title = paste("Number falling ill with TB (incidence number)", dcyear-1),
 
           value = paste0(ftb(pdata()$profile_estimates$e_inc_num),
                          " (",
@@ -147,13 +147,13 @@ output$tb_incidence_num <- renderInfoBox(
 # Notification
 output$tb_notified_num <- renderInfoBox(
 
-  infoBox(title = "People newly diagnosed and reported (notified) with TB 2020",
+  infoBox(title = paste("People newly diagnosed and reported (notified) with TB", dcyear-1),
 
           value = ftb_na(pdata()$profile_data$c_newinc, int_spacer),
 
           subtitle = HTML(paste0("(",
                                  ftb_na(pdata()$profile_data$c_newinc_ym1, int_spacer),
-                          " in 2019 ",
+                          " in ", dcyear-2, " ",
                           pct_change_arrow(pdata()$profile_data$c_newinc_ym1,
                                            pdata()$profile_data$c_newinc),
                           ")")
@@ -167,7 +167,7 @@ output$tb_notified_num <- renderInfoBox(
 
 output$diagnosed_wrd <- renderInfoBox(
 
-  infoBox(title = "WHO-recommended rapid diagnostics 2020",
+  infoBox(title = paste("WHO-recommended rapid diagnostics", dcyear-1),
 
           value = display_cap_pct(pdata()$profile_data$newinc_rdx,
                                   pdata()$profile_data$c_newinc),
@@ -182,13 +182,13 @@ output$diagnosed_wrd <- renderInfoBox(
 
 output$rrmdr_num <- renderInfoBox(
 
-  infoBox(title = "People diagnosed with drug-resistant TB 2020",
+  infoBox(title = paste("People diagnosed with drug-resistant TB", dcyear-1),
 
           value = ftb_na(pdata()$profile_data$conf_rrmdr, int_spacer),
 
           subtitle = HTML(paste0("(",
                                  ftb_na(pdata()$profile_data$conf_rrmdr_ym1, int_spacer),
-                                 " in 2019 ",
+                                 " in ", dcyear-2," ",
                                  pct_change_arrow(pdata()$profile_data$conf_rrmdr_ym1,
                                                   pdata()$profile_data$conf_rrmdr),
                                  ")")
@@ -202,13 +202,13 @@ output$rrmdr_num <- renderInfoBox(
 
 output$mdr_tx_num <- renderInfoBox(
 
-  infoBox(title = "People started on treatment for drug-resistant TB 2020",
+  infoBox(title = paste("People started on treatment for drug-resistant TB", dcyear-1),
 
           value = ftb_na(pdata()$profile_data$mdr_tx, int_spacer),
 
           subtitle = HTML(paste0("(",
                                  ftb_na(pdata()$profile_data$mdr_tx_ym1, int_spacer),
-                                 " in 2019 ",
+                                 " in ", dcyear-2, " ",
                                  pct_change_arrow(pdata()$profile_data$mdr_tx_ym1,
                                                   pdata()$profile_data$mdr_tx),
                                  ")")
@@ -223,7 +223,7 @@ output$mdr_tx_num <- renderInfoBox(
 
 output$mdr_tx_short_num <- renderInfoBox(
 
-  infoBox(title = "WHO-recommended shorter treatment regimens 2020",
+  infoBox(title = paste("WHO-recommended shorter treatment regimens", dcyear-1),
 
           value = display_cap_pct(pdata()$profile_data$mdr_alloral_short_tx,
                                   pdata()$profile_data$mdr_tx),
@@ -244,10 +244,13 @@ output$tsr <- renderText(
            paste0(
              "<span style='font-size:150%;'><b>",
              pdata()$profile_data$c_new_tsr,
-             "%</b></span> of those started TB treatment in 2019<br /><br /><br />",
+             "%</b></span> of those started TB treatment in ",
+             dcyear-2,
+             "<br /><br /><br />",
              "<span style='font-size:150%;'><b>",
              pdata()$profile_data$c_mdr_tsr,
-             "%</b></span> of those started drug-resistant TB treatment in 2018"
+             "%</b></span> of those started drug-resistant TB treatment in ",
+             dcyear-3
            ),
            "")
     )
@@ -258,28 +261,28 @@ output$tsr <- renderText(
 # TPT
 output$tpt_num <- renderInfoBox(
 
-  infoBox(title = "People started on TB preventive treatment 2020",
+  infoBox(title = paste("People started on TB preventive treatment", dcyear-1),
 
-          value = ftb_na(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "hiv"],
-                               pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "contact_04"],
-                               pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "contact_5plus"]),
+          value = ftb_na(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-1, "hiv"],
+                               pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-1, "contact_04"],
+                               pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-1, "contact_5plus"]),
                              na.rm = TRUE),
                          int_spacer),
 
           subtitle = HTML(paste0("(",
-                                 ftb_na(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "hiv"],
-                                              pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "contact_04"],
-                                              pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "contact_5plus"]),
+                                 ftb_na(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-2, "hiv"],
+                                              pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-2, "contact_04"],
+                                              pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-2, "contact_5plus"]),
                                             na.rm = TRUE),
                                         int_spacer),
-                                 " in 2019",
-                                 pct_change_arrow(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "hiv"],
-                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "contact_04"],
-                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2019, "contact_5plus"]),
+                                 " in ", dcyear-2, " ",
+                                 pct_change_arrow(sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-2, "hiv"],
+                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-2, "contact_04"],
+                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-2, "contact_5plus"]),
                                                       na.rm = TRUE),
-                                                  sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "hiv"],
-                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "contact_04"],
-                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==2020, "contact_5plus"]),
+                                                  sum(c(pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-1, "hiv"],
+                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-1, "contact_04"],
+                                                        pdata()$tpt_timeseries[pdata()$tpt_timeseries$year==dcyear-1, "contact_5plus"]),
                                                       na.rm = TRUE)
                                                   ),
                                  ")")),
@@ -293,7 +296,7 @@ output$tpt_num <- renderInfoBox(
 # Budget
 output$tb_budget <- renderInfoBox(
 
-  infoBox(title = "National TB budget 2021",
+  infoBox(title = paste("National TB budget", dcyear),
 
           value = paste0(ftb(pdata()$profile_data$tot_req),
                          " US$ million"),

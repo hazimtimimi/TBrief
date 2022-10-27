@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021 - May 2022
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 1.0"
+app_version <- "Version 1.1"
 
 library(shiny)
 library(shinydashboard)
@@ -169,7 +169,7 @@ ui <- dashboardPage(
                         # The cases attributable to 5 risk factors estimates is not shown for all countries
                         conditionalPanel(condition = "output.show_attributable_cases == 1",
                                          box(
-                                             title = "Why did people fall ill with TB in 2020?",
+                                             title = paste0("Why did people fall ill with TB in ", dcyear-1, "?"),
                                              solidHeader = TRUE,
                                              status = "success",
                                              width = 12,
