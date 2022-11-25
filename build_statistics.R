@@ -293,23 +293,34 @@ output$tpt_num <- renderInfoBox(
   )
 )
 
-# Budget
-output$tb_budget <- renderInfoBox(
+# Funding
+output$tb_funding <- renderInfoBox(
 
-  infoBox(title = paste("National TB budget", dcyear),
+  infoBox(title = paste("Funding for TB", dcyear-1),
 
-          value = paste0(ftb(pdata()$profile_data$tot_req),
+          value = paste0(ftb_na(sum(c(pdata()$funding_timeseries[pdata()$funding_timeseries$year == dcyear-1, "a_domestic_funds"],
+                                      pdata()$funding_timeseries[pdata()$funding_timeseries$year == dcyear-1, "b_international_funds"]),
+                                    na.rm = TRUE),
+                                int_spacer),
                          " US$ million"),
 
-          subtitle = paste0(ftb(pdata()$profile_data$tot_gap),
-                            " US$ million (",
-                            display_cap_pct(pdata()$profile_data$tot_gap,
-                                            pdata()$profile_data$tot_req),
-                            ") of the budget was not funded"),
+          subtitle = HTML(paste0("(",
+                                 ftb_na(sum(c(pdata()$funding_timeseries[pdata()$funding_timeseries$year == dcyear-2, "a_domestic_funds"],
+                                              pdata()$funding_timeseries[pdata()$funding_timeseries$year == dcyear-2, "b_international_funds"]),
+                                            na.rm = TRUE),
+                                        int_spacer),
+                                 " US$ million in ", dcyear-2, " ",
+                                 pct_change_arrow(sum(c(pdata()$funding_timeseries[pdata()$funding_timeseries$year == dcyear-2, "a_domestic_funds"],
+                                                        pdata()$funding_timeseries[pdata()$funding_timeseries$year == dcyear-2, "b_international_funds"]),
+                                                      na.rm = TRUE),
+                                                  sum(c(pdata()$funding_timeseries[pdata()$funding_timeseries$year == dcyear-1, "a_domestic_funds"],
+                                                        pdata()$funding_timeseries[pdata()$funding_timeseries$year == dcyear-1, "b_international_funds"]),
+                                                      na.rm = TRUE)
+                                 ),
+                                 ")")),
 
           icon = icon("coins"),
 
           color = "orange"
   )
 )
-

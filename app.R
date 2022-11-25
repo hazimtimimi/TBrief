@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021 - May 2022
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 1.1"
+app_version <- "Version 1.2"
 
 library(shiny)
 library(shinydashboard)
@@ -224,14 +224,14 @@ ui <- dashboardPage(
                         # The TB financing information is not shown for all countries
                         conditionalPanel(condition = "output.show_finance == 1",
                                          box(
-                                             title = "TB budget",
+                                             title = "Funding for TB",
                                              solidHeader = TRUE,
                                              status = "warning",
                                              width = 12,
-                                             plotOutput(outputId = "budget_chart", height = "200px")
+                                             plotOutput(outputId = "funding_chart", height = "200px")
                                          ),
 
-                                         infoBoxOutput(outputId = "tb_budget", width = 12)
+                                         infoBoxOutput(outputId = "tb_funding", width = 12)
                         )
                     )
                 ),
