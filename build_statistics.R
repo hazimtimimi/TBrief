@@ -180,17 +180,27 @@ output$diagnosed_wrd <- renderInfoBox(
   )
 )
 
-output$rrmdr_num <- renderInfoBox(
+output$dr_num <- renderInfoBox(
 
   infoBox(title = paste("People diagnosed with drug-resistant TB", dcyear-1),
 
-          value = ftb_na(pdata()$profile_data$conf_rrmdr, int_spacer),
+          value = ftb_na(sum(c(pdata()$profile_data$conf_rr_nfqr,
+                               pdata()$profile_data$conf_rr_fqr),
+                             na.rm = TRUE),
+                         int_spacer),
 
           subtitle = HTML(paste0("(",
-                                 ftb_na(pdata()$profile_data$conf_rrmdr_ym1, int_spacer),
+                                 ftb_na(sum(c(pdata()$profile_data$conf_rr_nfqr_ym1,
+                                              pdata()$profile_data$conf_rr_fqr_ym1),
+                                            na.rm = TRUE), int_spacer),
                                  " in ", dcyear-2," ",
-                                 pct_change_arrow(pdata()$profile_data$conf_rrmdr_ym1,
-                                                  pdata()$profile_data$conf_rrmdr),
+                                 pct_change_arrow(sum(c(pdata()$profile_data$conf_rr_nfqr_ym1,
+                                                        pdata()$profile_data$conf_rr_fqr_ym1),
+                                                      na.rm = TRUE),
+                                                  sum(c(pdata()$profile_data$conf_rr_nfqr,
+                                                        pdata()$profile_data$conf_rr_fqr),
+                                                      na.rm = TRUE)
+                                                  ),
                                  ")")
           ),
 
@@ -200,17 +210,31 @@ output$rrmdr_num <- renderInfoBox(
   )
 )
 
-output$mdr_tx_num <- renderInfoBox(
+output$dr_tx_num <- renderInfoBox(
 
   infoBox(title = paste("People started on treatment for drug-resistant TB", dcyear-1),
 
-          value = ftb_na(pdata()$profile_data$mdr_tx, int_spacer),
+          value = ftb_na(sum(c(pdata()$profile_data$unconf_rr_nfqr_tx,
+                               pdata()$profile_data$conf_rr_nfqr_tx,
+                               pdata()$profile_data$conf_rr_fqr_tx),
+                             na.rm = TRUE),
+                         int_spacer),
 
           subtitle = HTML(paste0("(",
-                                 ftb_na(pdata()$profile_data$mdr_tx_ym1, int_spacer),
+                                 ftb_na(sum(c(pdata()$profile_data$unconf_rr_nfqr_tx_ym1,
+                                              pdata()$profile_data$conf_rr_nfqr_tx_ym1,
+                                              pdata()$profile_data$conf_rr_fqr_tx_ym1),
+                                            na.rm = TRUE),
+                                        int_spacer),
                                  " in ", dcyear-2, " ",
-                                 pct_change_arrow(pdata()$profile_data$mdr_tx_ym1,
-                                                  pdata()$profile_data$mdr_tx),
+                                 pct_change_arrow(sum(c(pdata()$profile_data$unconf_rr_nfqr_tx_ym1,
+                                                        pdata()$profile_data$conf_rr_nfqr_tx_ym1,
+                                                        pdata()$profile_data$conf_rr_fqr_tx_ym1),
+                                                      na.rm = TRUE),
+                                                  sum(c(pdata()$profile_data$unconf_rr_nfqr_tx,
+                                                        pdata()$profile_data$conf_rr_nfqr_tx,
+                                                        pdata()$profile_data$conf_rr_fqr_tx),
+                                                      na.rm = TRUE)),
                                  ")")
           ),
 
@@ -226,7 +250,10 @@ output$mdr_tx_short_num <- renderInfoBox(
   infoBox(title = paste("WHO-recommended shorter treatment regimens", dcyear-1),
 
           value = display_cap_pct(pdata()$profile_data$mdr_alloral_short_tx,
-                                  pdata()$profile_data$mdr_tx),
+                                  sum(c(pdata()$profile_data$unconf_rr_nfqr_tx,
+                                        pdata()$profile_data$conf_rr_nfqr_tx,
+                                        pdata()$profile_data$conf_rr_fqr_tx),
+                                      na.rm = TRUE)),
 
           subtitle = "Percentage of people started on WHO-recommended shorter regimens for drug-resistant TB",
 

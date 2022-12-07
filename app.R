@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021 - May 2022
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 1.2"
+app_version <- "Version 1.3"
 
 library(shiny)
 library(shinydashboard)
@@ -155,9 +155,9 @@ ui <- dashboardPage(
 
                         infoBoxOutput(outputId = "diagnosed_wrd", width = 12),
 
-                        infoBoxOutput(outputId = "rrmdr_num", width = 12),
+                        infoBoxOutput(outputId = "dr_num", width = 12),
 
-                        infoBoxOutput(outputId = "mdr_tx_num", width = 12),
+                        infoBoxOutput(outputId = "dr_tx_num", width = 12),
 
                         infoBoxOutput(outputId = "mdr_tx_short_num", width = 12)
 
