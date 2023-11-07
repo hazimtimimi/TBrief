@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021 - May 2022
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 1.3"
+app_version <- "Version 1.4"
 
 library(shiny)
 library(shinydashboard)

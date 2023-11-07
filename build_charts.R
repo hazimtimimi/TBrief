@@ -172,6 +172,7 @@ output$mortality_chart <-  renderPlot({
   mort_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"] * 0.65
 
   pdata()$epi_timeseries %>%
+    filter(year >= 2010) %>%
     ggplot(aes(x=year, y=e_mort_num, ymin=0)) +
     geom_line(size=3,
               colour=gtbreport::palette_gtb("mort")) +
@@ -188,7 +189,7 @@ output$mortality_chart <-  renderPlot({
              x=2016,
              y=mort_milestone*1.15) +
 
-    scale_x_continuous(name=element_blank(), breaks = c(2000, dcyear-1)) +
+    scale_x_continuous(name=element_blank(), breaks = c(2010, 2015, 2020, dcyear-1)) +
 
     scale_y_continuous(name = "Number per year",
                        limits = c(0, NA),
@@ -220,6 +221,8 @@ output$incidence_chart <-  renderPlot({
 
   pdata()$epi_timeseries %>%
 
+    filter(year >= 2010) %>%
+
     ggplot() +
 
     geom_ribbon(mapping=aes(x=year, ymin=e_inc_100k_lo, ymax=e_inc_100k_hi),
@@ -243,7 +246,7 @@ output$incidence_chart <-  renderPlot({
     scale_color_manual(values = c('TB incidence' = gtbreport::palette_gtb("inc"),
                                   'People notified with TB' = '#000000')) +
 
-    scale_x_continuous(name=element_blank(), breaks = c(2000, dcyear-1)) +
+    scale_x_continuous(name=element_blank(), breaks = c(2010, 2015, 2020, dcyear-1)) +
 
     scale_y_continuous(name = "Number\nper 100 000 per year",
                        limits = c(0, NA),
