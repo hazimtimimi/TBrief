@@ -4,7 +4,7 @@
 # Hazim Timimi, November 2021 - May 2022
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 1.4"
+app_version <- "Version 1.5"
 
 library(shiny)
 library(shinydashboard)
@@ -100,7 +100,7 @@ ui <- dashboardPage(
 
                     # Milestones  ----
 
-                    HTML("<h2>End TB Strategy milestones for 2020</h2>"),
+                    htmlOutput(outputId = "end_tb_strategy_milestones"),
 
                     infoBoxOutput(outputId = "milestone_deaths"),
                     infoBoxOutput(outputId = "milestone_incidence"),
@@ -317,6 +317,17 @@ server <- function(input, output, session) {
 
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # Define the 2025 End TB Strategy milestones ----
+    #
+    # - a 50% drop in incidence per 100,000 population compared to 2015
+    # - a 75% drop in total TB deaths (HIV-negative + HIV-positive) compared to 2015
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    milestone_yr <- "2025"
+    inc_milestone_vs_2015 <- 0.5     # a 50% drop in incidence rate compared to 2015
+    mort_milestone_vs_2015 <- 0.25   # a 75% drop in total TB deaths compared to 2015
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     # Build all the output objects to display in the application
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -349,6 +360,9 @@ server <- function(input, output, session) {
               url,
               "' target='_blank'>the detailed TB profile</a><br /><br />&nbsp;</h3>")
     })
+
+
+    output$end_tb_strategy_milestones <- renderText({ paste("<h2>End TB Strategy milestones for", milestone_yr, "</h2>") })
 
     source("build_statistics.R", local = TRUE)
 
@@ -407,7 +421,7 @@ server <- function(input, output, session) {
         # Make sure total number on TPT is > 0
 
         tpt_tot <- pdata()$tpt_timeseries %>%
-            summarise(across(-year, sum, na.rm = TRUE)) %>%
+            summarise(across(-year,  \(x) sum(x, na.rm = TRUE))) %>%
             rowSums(na.rm = TRUE)
 
         if (tpt_tot > 0){

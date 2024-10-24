@@ -42,7 +42,7 @@ target_achieved_bar <- function(achieved_val, target_val, achieved_text){
              x = 0.7, y = 0,
              xend = 1.3, yend = 0,
              colour = "gray",
-             size = 1) +
+             linewidth = 1) +
 
     # ensure there is enough space to show the text annotations
     xlim(0.5,1.5) +
@@ -65,7 +65,7 @@ target_achieved_bar <- function(achieved_val, target_val, achieved_text){
                x = 0.7, y = target_val,
                xend = 1.3, yend = target_val,
                colour = "lightblue",
-               size = 0.25,
+               linewidth = 0.25,
                linetype = 2)
 
   }
@@ -79,9 +79,6 @@ output$incidence_milestone_bar <-  renderPlot({
 
   # Make sure there are data to plot
   req(pdata()$epi_timeseries)
-
-  # The End TB strategy milestone is 20% incidence reduction compared to 2015
-  inc_milestone <-  20
 
   # Calculate the actual change in incidence compared to 2015
   inc_achieved <- ifelse(NZ(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"])==0,
@@ -98,7 +95,7 @@ output$incidence_milestone_bar <-  renderPlot({
 
   # Create the horizontal bar chart
   target_achieved_bar(achieved_val = inc_achieved,
-                      target_val = inc_milestone,
+                      target_val = inc_milestone_vs_2015 * 100,
                       achieved_text = inc_achieved_text)
 
 })
@@ -107,9 +104,6 @@ output$deaths_milestone_bar <-  renderPlot({
 
   # Make sure there are data to plot
   req(pdata()$epi_timeseries)
-
-  # The End TB strategy milestone is 35% reduction in total deaths compared to 2015
-  deaths_milestone <-  35
 
   # Calculate the actual change in incidence compared to 2015
   deaths_achieved <- ifelse(NZ(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"])==0,
@@ -126,7 +120,7 @@ output$deaths_milestone_bar <-  renderPlot({
 
   # Create the horizontal bar chart
   target_achieved_bar(achieved_val = deaths_achieved,
-                      target_val = deaths_milestone,
+                      target_val = mort_milestone_vs_2015 * 100,
                       achieved_text = deaths_achieved_text)
 
 })
@@ -168,13 +162,13 @@ output$mortality_chart <-  renderPlot({
   # Make sure there are data to plot
   req(pdata()$epi_timeseries)
 
-  # Calculate the End TB strategy milestone of 35% total deaths reduction compared to 2015
-  mort_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"] * 0.65
+  # Calculate the End TB strategy milestone of total deaths reduction compared to 2015
+  mort_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"] * mort_milestone_vs_2015
 
   pdata()$epi_timeseries %>%
     filter(year >= 2010) %>%
     ggplot(aes(x=year, y=e_mort_num, ymin=0)) +
-    geom_line(size=3,
+    geom_line(linewidth=3,
               colour=gtbreport::palette_gtb("mort")) +
 
     geom_ribbon(aes(x=year, ymin=e_mort_num_lo, ymax=e_mort_num_hi),
@@ -185,9 +179,9 @@ output$mortality_chart <-  renderPlot({
     geom_hline(mapping=aes(yintercept = mort_milestone, linetype = I(2))) +
 
     annotate(geom='text',
-             label='2020 milestone',
-             x=2016,
-             y=mort_milestone*1.15) +
+             label=paste(milestone_yr, "milestone"),
+             x=2015,
+             y=mort_milestone*0.5) +
 
     scale_x_continuous(name=element_blank(), breaks = c(2010, 2015, 2020, dcyear-1)) +
 
@@ -216,8 +210,8 @@ output$incidence_chart <-  renderPlot({
   # Make sure there are data to plot
   req(pdata()$epi_timeseries)
 
-  # Calculate the End TB strategy milestone of 20% incidence reduction compared to 2015
-  inc_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"] * 0.8
+  # Calculate the End TB strategy milestone of incidence reduction compared to 2015
+  inc_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"] * inc_milestone_vs_2015
 
   pdata()$epi_timeseries %>%
 
@@ -230,18 +224,18 @@ output$incidence_chart <-  renderPlot({
                 alpha=0.1) +
 
     geom_line(mapping=aes(x=year, y=e_inc_100k, colour="TB incidence"),
-              size=3) +
+              linewidth=3) +
 
     # Add End TB strategy milestone as dashed line
     geom_hline(mapping=aes(yintercept = inc_milestone, linetype = I(2))) +
 
     annotate(geom='text',
-             label='2020 milestone',
-             x=2016,
-             y=inc_milestone*1.15) +
+             label=paste(milestone_yr, "milestone"),
+             x=2015,
+             y=inc_milestone*0.7) +
 
     geom_line(mapping=aes(x=year, y=c_newinc_100k, colour="People notified with TB"),
-              size=3) +
+              linewidth=3) +
 
     scale_color_manual(values = c('TB incidence' = gtbreport::palette_gtb("inc"),
                                   'People notified with TB' = '#000000')) +

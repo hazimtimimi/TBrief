@@ -18,7 +18,7 @@ output$population <- renderInfoBox(
 output$milestone_deaths <- renderInfoBox(
 
   infoBox(title = paste("TB deaths", dcyear-1, "vs 2015"),
-          subtitle = "(Target is 35% reduction by 2020)",
+          subtitle = paste0("(Target is ", (1-mort_milestone_vs_2015)*100, "% reduction by ", milestone_yr, ")"),
           value = pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"],
                                          pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num"]),
           icon = icon("people-carry")
@@ -28,7 +28,7 @@ output$milestone_deaths <- renderInfoBox(
 output$milestone_incidence <- renderInfoBox(
 
   infoBox(title = paste("TB incidence", dcyear-1, "vs 2015"),
-          subtitle = "(Target is 20% reduction by 2020)",
+          subtitle = paste0("(Target is ", (1-inc_milestone_vs_2015)*100, "% reduction by ", milestone_yr, ")"),
           value = pct_change_description(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"],
                                          pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_inc_100k"]),
           icon = icon("head-side-cough"),
