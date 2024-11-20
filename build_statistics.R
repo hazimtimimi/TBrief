@@ -40,10 +40,18 @@ output$milestone_catast <- renderInfoBox(
 
   infoBox(title = "Catastrophic costs",
           subtitle = "(Target is 0% of people with TB facing catastrophic costs by 2020)",
-          value = ifelse(is.na(pdata()$profile_data[, "catast_pct"]),
-                         "No data",
-                         paste0(signif(pdata()$profile_data[, "catast_pct"], 2), "%")
-                         ),
+          value =
+            # Check whether the data exist and whether they
+            # are from a survey or from modelled estimates
+            case_when(
+              !is.na(pdata()$profile_estimates[, "catast_pct"]) ~
+                paste0(pdata()$profile_estimates[, "catast_pct"], "%"),
+
+              check_entity_type(input$entity_type) == "country" & !is.na(pdata()$profile_estimates[, "catast_model_pct"]) ~
+                paste0(pdata()$profile_estimates[, "catast_model_pct"], "%"),
+
+              .default = "No data"
+            ),
           icon = icon("balance-scale-left"),
           color = "orange"
           )
