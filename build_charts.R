@@ -19,13 +19,15 @@ target_achieved_bar <- function(achieved_val, target_val, achieved_text){
              fill="lightblue",
              width = 0.4,
              colour = "darkblue",
-             position="identity")   +
+             position="identity",
+             na.rm = TRUE)   +
 
     geom_col(aes(x=1, y=achieved_val),
              fill="darkblue",
              width = 0.4,
              colour = "darkblue",
-             position="identity")  +
+             position="identity",
+             na.rm = TRUE)  +
 
     annotate("text",
              x=1.4,
@@ -165,8 +167,8 @@ output$mortality_chart <-  renderPlot({
   # Calculate the End TB strategy milestone of total deaths reduction compared to 2015
   mort_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"] * mort_milestone_vs_2015
 
-  pdata()$epi_timeseries %>%
-    filter(year >= 2010) %>%
+  pdata()$epi_timeseries |>
+    filter(year >= 2010) |>
     ggplot(aes(x=year, y=e_mort_num, ymin=0)) +
     geom_line(linewidth=3,
               colour=gtbreport::palette_gtb("mort")) +
@@ -213,9 +215,9 @@ output$incidence_chart <-  renderPlot({
   # Calculate the End TB strategy milestone of incidence reduction compared to 2015
   inc_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"] * inc_milestone_vs_2015
 
-  pdata()$epi_timeseries %>%
+  pdata()$epi_timeseries |>
 
-    filter(year >= 2010) %>%
+    filter(year >= 2010) |>
 
     ggplot() +
 
@@ -235,7 +237,8 @@ output$incidence_chart <-  renderPlot({
              y=inc_milestone*0.7) +
 
     geom_line(mapping=aes(x=year, y=c_newinc_100k, colour="People notified with TB"),
-              linewidth=3) +
+              linewidth=3,
+              na.rm = TRUE) +
 
     scale_color_manual(values = c('TB incidence' = gtbreport::palette_gtb("inc"),
                                   'People notified with TB' = '#000000')) +
@@ -280,16 +283,16 @@ output$rf_chart <-  renderPlot({
                                      "Smoking",
                                      "Undernutrition"))
 
-  pdata()$attributable_cases %>%
+  pdata()$attributable_cases |>
 
     # Get the labels for each risk factor
-    right_join(df_labs, by = "risk_factor") %>%
+    right_join(df_labs, by = "risk_factor") |>
 
     # Order by descending number of attributable cases
-    arrange(desc(best)) %>%
+    arrange(desc(best)) |>
 
     # Preserve the order by setting risk_factor as a factor variable
-    mutate(label_text = factor(label_text, levels = rev(label_text))) %>%
+    mutate(label_text = factor(label_text, levels = rev(label_text))) |>
 
     # Plot
     ggplot(aes(y=label_text,
@@ -340,11 +343,12 @@ output$tsr_chart <-  renderPlot({
 
 
   # Create simple horizontal bar chart
-  tx_out %>%
+  tx_out |>
 
     ggplot(aes(x=cat, y=val, fill=out)) +
     geom_col(alpha=0.4,
-             show.legend = FALSE) +
+             show.legend = FALSE,
+             na.rm = TRUE) +
 
     scale_fill_manual(name=element_blank(),
                       values = c("lightblue",
@@ -378,20 +382,21 @@ output$tpt_chart <- renderPlot({
         sum(!is.na(pdata()$tpt_timeseries$contact_04)) +
         sum(!is.na(pdata()$tpt_timeseries$contact_5plus)) > 0)
 
-  pdata()$tpt_timeseries %>%
+  pdata()$tpt_timeseries |>
 
     # flip to long format for plotting
     pivot_longer(cols = hiv:contact_5plus,
                  names_to = "TPT_category",
-                 values_to = "how_many") %>%
+                 values_to = "how_many") |>
 
     # Set the order of the TPT categories so that it is reflected in the chart
     mutate(TPT_category = factor(TPT_category,
-                                 levels = c("hiv", "contact_04", "contact_5plus"))) %>%
+                                 levels = c("hiv", "contact_04", "contact_5plus"))) |>
 
     ggplot(aes(x=year, y=how_many, fill = TPT_category)) +
 
-    geom_col(position = position_stack(reverse = TRUE)) +
+    geom_col(position = position_stack(reverse = TRUE),
+             na.rm = TRUE) +
 
     scale_x_continuous(name=element_blank(),
                        breaks = c(2015, dcyear-1)) +
@@ -437,7 +442,7 @@ output$funding_chart <-  renderPlot({
   # Only plot the data if have at least one year with data
 
   if (ndata_cols > 0) {
-    plotobj <- pdata()$funding_timeseries %>%
+    plotobj <- pdata()$funding_timeseries |>
 
       # Convert to long format
       pivot_longer(
@@ -446,11 +451,12 @@ output$funding_chart <-  renderPlot({
         values_to = "fund_amount",
         # drop empty values
         values_drop_na = TRUE
-      ) %>%
+      ) |>
 
       ggplot(aes(x = year, y = fund_amount, fill = funding)) +
 
-      geom_col(position = position_stack(reverse = TRUE)) +
+      geom_col(position = position_stack(reverse = TRUE),
+               na.rm = TRUE) +
 
       scale_fill_manual(
         "",

@@ -2,9 +2,11 @@
 # Display TB country and group (regional/global) summary data on TB using JSON data
 # retrieved from the WHO global tuberculosis database
 # Hazim Timimi, November 2021 - May 2022
+#               Updated August 2025 to change country code input paramater from iso2 tp
+#                     iso3 code as was done for the main profiles shiny app(Version 2.0)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 1.6"
+app_version <- "Version 2.0"
 
 library(shiny)
 library(shinydashboard)
@@ -20,9 +22,7 @@ library(ggplot2)
 # Make sure to specify the data being read are UTF-8 encoded
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
 json_url <- "https://extranet.who.int/tme/generateJSON.asp"
-
 
 year_countries <- fromJSON(readLines(paste0(json_url, "?ds=countries"), warn = FALSE, encoding = "UTF-8"))
 
@@ -299,6 +299,19 @@ server <- function(input, output, session) {
     # Create the country or group selection lists in the selected language
     source("select_entity.R", local = TRUE)
 
+    # Convert an iso3 code passed as a parameter to an iso2 code ----
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    iso2 <- reactive({
+      req(input$iso3)
+
+      iso2 <- countries |>
+        filter(iso3==input$iso3) |>
+        select(iso2) |>
+        as.character()
+
+      return(iso2)
+    })
+
 
     # Get the profile data as a JSON file for the chosen country or group
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -308,7 +321,7 @@ server <- function(input, output, session) {
         if (check_entity_type(input$entity_type) == "group") {
             url <- paste0(json_url, "?ds=group_data&group_code=", input$group_code)
         } else {
-            url <- paste0(json_url, "?ds=data&iso2=", input$iso2)
+            url <- paste0(json_url, "?ds=data&iso2=", iso2())
         }
 
        json <- fromJSON(readLines(url, warn = FALSE, encoding = 'UTF-8'))
@@ -353,7 +366,7 @@ server <- function(input, output, session) {
         if (check_entity_type(input$entity_type) == "group") {
             url <- paste0(base_url, '?_inputs_&lan="EN"&entity_type="group"&group_code="', input$group_code, '"')
         } else {
-            url <- paste0(base_url, '?_inputs_&entity_type="country"&lan="EN"&iso2="', input$iso2, '"')
+            url <- paste0(base_url, '?_inputs_&entity_type="country"&lan="EN"&iso3="', input$iso3, '"')
         }
 
         paste("<h3><br />See also <a href='",
@@ -420,8 +433,8 @@ server <- function(input, output, session) {
 
         # Make sure total number on TPT is > 0
 
-        tpt_tot <- pdata()$tpt_timeseries %>%
-            summarise(across(-year,  \(x) sum(x, na.rm = TRUE))) %>%
+        tpt_tot <- pdata()$tpt_timeseries |>
+            summarise(across(-year,  \(x) sum(x, na.rm = TRUE))) |>
             rowSums(na.rm = TRUE)
 
         if (tpt_tot > 0){
