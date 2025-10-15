@@ -4,9 +4,11 @@
 # Hazim Timimi, November 2021 - May 2022
 #               Updated August 2025 to change country code input paramater from iso2 tp
 #                     iso3 code as was done for the main profiles shiny app(Version 2.0)
+#               Updated October 2025 to produce compact profiles for entities using the compact
+#                     data collection form and for which disaggregated estimates are not produced.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 2.0"
+app_version <- "Version 3.0"
 
 library(shiny)
 library(shinydashboard)
@@ -155,11 +157,15 @@ ui <- dashboardPage(
 
                         infoBoxOutput(outputId = "diagnosed_wrd", width = 12),
 
-                        infoBoxOutput(outputId = "dr_num", width = 12),
+                        # Only show the other info boxes if the entity does not use the compact form
+                        conditionalPanel(condition = "output.compact_form == 0",
 
-                        infoBoxOutput(outputId = "dr_tx_num", width = 12),
+                                         infoBoxOutput(outputId = "dr_num", width = 12),
 
-                        infoBoxOutput(outputId = "mdr_tx_short_num", width = 12)
+                                         infoBoxOutput(outputId = "dr_tx_num", width = 12),
+
+                                         infoBoxOutput(outputId = "mdr_tx_short_num", width = 12)
+                        )
 
                     ),
 
@@ -201,40 +207,43 @@ ui <- dashboardPage(
                 ),
 
                 # TPT and finance row ----
-                fluidRow(
-                    column(
-                        width = 6,
-                        # Hide the TPT chart if there are no data to show
-                        conditionalPanel(condition = "output.show_tpt == 1",
-                                         box(
-                                             title = "People started on TB preventive treatment",
-                                             solidHeader = TRUE,
-                                             status = "success",
-                                             width = 12,
-                                             plotOutput(outputId = "tpt_chart", height = "200px")
-                                         )
-                        ),
+              # Only show TPT and finance row if the entity does not use the compact form
+            conditionalPanel(condition = "output.compact_form == 0",
+                             fluidRow(
+                               column(
+                                 width = 6,
+                                 # Hide the TPT chart if there are no data to show
+                                 conditionalPanel(condition = "output.show_tpt == 1",
+                                                  box(
+                                                    title = "People started on TB preventive treatment",
+                                                    solidHeader = TRUE,
+                                                    status = "success",
+                                                    width = 12,
+                                                    plotOutput(outputId = "tpt_chart", height = "200px")
+                                                  )
+                                 ),
 
-                        infoBoxOutput(outputId = "tpt_num", width = 12)
+                                 infoBoxOutput(outputId = "tpt_num", width = 12)
 
-                    ),
+                               ),
 
-                    column(
-                        width = 6,
-                        # The TB financing information is not shown for all countries
-                        conditionalPanel(condition = "output.show_finance == 1",
-                                         box(
-                                             title = "Funding for TB",
-                                             solidHeader = TRUE,
-                                             status = "warning",
-                                             width = 12,
-                                             plotOutput(outputId = "funding_chart", height = "200px")
-                                         ),
+                               column(
+                                 width = 6,
+                                 # The TB financing information is not shown for all countries
+                                 conditionalPanel(condition = "output.show_finance == 1",
+                                                  box(
+                                                    title = "Funding for TB",
+                                                    solidHeader = TRUE,
+                                                    status = "warning",
+                                                    width = 12,
+                                                    plotOutput(outputId = "funding_chart", height = "200px")
+                                                  ),
 
-                                         infoBoxOutput(outputId = "tb_funding", width = 12)
-                        )
-                    )
-                ),
+                                                  infoBoxOutput(outputId = "tb_funding", width = 12)
+                                 )
+                               )
+                             )
+            ),
 
                 # Footer ----
                 htmlOutput(outputId = "generation"),
@@ -327,6 +336,28 @@ server <- function(input, output, session) {
        json <- fromJSON(readLines(url, warn = FALSE, encoding = 'UTF-8'))
        return(json)
     })
+
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # See if the entity only used the compact form introduced in 2025. In such cases
+    # only need to show a few data items
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    output$compact_form <- reactive ({
+
+      req(pdata()$profile_properties)
+
+      if (pdata()$profile_properties[, "dc_form_description"] == "Compact form"){
+        result <- 1
+      } else {
+        result <- 0
+      }
+
+      return(result)
+    })
+
+    # Need this to make sure browser can switch attributable cases  elements back on again if hidden
+    outputOptions(output, "compact_form", suspendWhenHidden = FALSE)
 
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -257,13 +257,14 @@ output$mdr_tx_short_num <- renderInfoBox(
 
   infoBox(title = paste("WHO-recommended shorter treatment regimens", dcyear-1),
 
-          value = display_cap_pct(pdata()$profile_data$mdr_alloral_short_tx,
+          value = display_cap_pct(sum(c(pdata()$profile_data$dr_6m_tx,
+                                        pdata()$profile_data$dr_9m_tx)),
                                   sum(c(pdata()$profile_data$unconf_rr_nfqr_tx,
                                         pdata()$profile_data$conf_rr_nfqr_tx,
                                         pdata()$profile_data$conf_rr_fqr_tx),
                                       na.rm = TRUE)),
 
-          subtitle = "Percentage of people started on WHO-recommended shorter regimens for drug-resistant TB",
+          subtitle = "Percentage of people with MDR/RR-TB treated with 6-month or 9-month regimens",
 
           icon = icon("pills"),
 
@@ -281,11 +282,16 @@ output$tsr <- renderText(
              pdata()$profile_data$c_new_tsr,
              "%</b></span> of those started TB treatment in ",
              dcyear-2,
-             "<br /><br /><br />",
-             "<span style='font-size:150%;'><b>",
-             pdata()$profile_data$c_mdr_tsr,
-             "%</b></span> of those started drug-resistant TB treatment in ",
-             dcyear-3
+             ifelse(isTruthy(pdata()$profile_data$c_mdr_tsr),
+                    paste0(
+                      "<br /><br /><br />",
+                      "<span style='font-size:150%;'><b>",
+                      pdata()$profile_data$c_mdr_tsr,
+                      "%</b></span> of those started drug-resistant TB treatment in ",
+                      dcyear-3
+                    ),
+                    ""
+                    )
            ),
            "")
     )

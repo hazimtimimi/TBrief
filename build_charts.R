@@ -2,161 +2,13 @@
 # Build charts
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# A. Horizontal progress bars for the End TB Strategy milestones
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-# Generic function to generate a horizontal bar chart
-
-target_achieved_bar <- function(achieved_val, target_val, achieved_text){
-
-
-  output <- ggplot() +
-
-    geom_col(aes(x=1, y=target_val),
-             fill="lightblue",
-             width = 0.4,
-             colour = "darkblue",
-             position="identity",
-             na.rm = TRUE)   +
-
-    geom_col(aes(x=1, y=achieved_val),
-             fill="darkblue",
-             width = 0.4,
-             colour = "darkblue",
-             position="identity",
-             na.rm = TRUE)  +
-
-    annotate("text",
-             x=1.4,
-             y=target_val,
-             label=paste0("Target\n", target_val, "%")) +
-
-    annotate("text",
-             x=1,
-             y=ifelse(achieved_val <= 0, achieved_val - 2, achieved_val)*1.2,
-             label=paste0(achieved_text, ifelse(achieved_val < 0, "\nincrease", "")),
-             colour="darkblue") +
-
-    annotate("segment",
-             x = 0.7, y = 0,
-             xend = 1.3, yend = 0,
-             colour = "gray",
-             linewidth = 1) +
-
-    # ensure there is enough space to show the text annotations
-    xlim(0.5,1.5) +
-
-    ylim(ifelse(achieved_val <= 0, (achieved_val - 3)*1.3, 0),
-         max(ifelse(target_val==0, 3, target_val), achieved_val)*1.3) +
-
-    coord_flip() +
-
-    # Remove all axes, legends, etc.
-    theme_void() +
-    theme(legend.position = "none")
-
-  if (NZ(achieved_val) > target_val) {
-
-    # Add a dashed line at the target value on top of the achievement bar
-    output <- output +
-
-      annotate("segment",
-               x = 0.7, y = target_val,
-               xend = 1.3, yend = target_val,
-               colour = "lightblue",
-               linewidth = 0.25,
-               linetype = 2)
-
-  }
-
-  return(output)
-
-}
-
-
-output$incidence_milestone_bar <-  renderPlot({
-
-  # Make sure there are data to plot
-  req(pdata()$epi_timeseries)
-
-  # Calculate the actual change in incidence compared to 2015
-  inc_achieved <- ifelse(NZ(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"])==0,
-                         # If estimate is not available pretend achievement is 0%
-                         0,
-                         (pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"] -
-                            pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_inc_100k"]) * 100/
-                           pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"])
-
-  inc_achieved_text <- ifelse(is.na(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"]),
-                              "No data",
-                              paste0(abs(signif(inc_achieved, 2)), "%")
-  )
-
-  # Create the horizontal bar chart
-  target_achieved_bar(achieved_val = inc_achieved,
-                      target_val = inc_milestone_vs_2015 * 100,
-                      achieved_text = inc_achieved_text)
-
-})
-
-output$deaths_milestone_bar <-  renderPlot({
-
-  # Make sure there are data to plot
-  req(pdata()$epi_timeseries)
-
-  # Calculate the actual change in incidence compared to 2015
-  deaths_achieved <- ifelse(NZ(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"])==0,
-                            # If estimate is not available pretend achievement is 0%
-                            0,
-                            (pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"] -
-                               pdata()$epi_timeseries[pdata()$epi_timeseries$year == dcyear-1, "e_mort_num"]) * 100/
-                              pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"])
-
-  deaths_achieved_text <- ifelse(is.na(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"]),
-                                 "No data",
-                                 paste0(abs(signif(deaths_achieved, 2)), "%")
-  )
-
-  # Create the horizontal bar chart
-  target_achieved_bar(achieved_val = deaths_achieved,
-                      target_val = mort_milestone_vs_2015 * 100,
-                      achieved_text = deaths_achieved_text)
-
-})
-
-output$catastrophic_milestone_bar <- renderPlot({
-
-  # Make sure there are data to plot
-  req(pdata()$profile_data)
-
-  # The End TB strategy milestone is 0% of patients to suffer catastrophic costs in 2020
-  catastrophic_milestone <-  0
-
-  # Get estimate of catastrophic costs if available (if not available pretend it is zero)
-  catastrophic_achieved <- NZ(pdata()$profile_data[, "catast_pct"])
-
-  catastrophic_achieved_text <- ifelse(is.na(pdata()$profile_data[, "catast_pct"]),
-                                       "No data",
-                                       paste0(abs(signif(catastrophic_achieved, 2)), "%")
-  )
-
-  # Create the horizontal bar chart
-  target_achieved_bar(achieved_val = catastrophic_achieved,
-                      target_val = catastrophic_milestone,
-                      achieved_text = catastrophic_achieved_text)
-
-})
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# B. Indicator charts
+# A. Indicator charts ----
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 1. Mortality 2000 - latest year
+# 1. Mortality 2010 - latest year ----
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 output$mortality_chart <-  renderPlot({
@@ -175,7 +27,7 @@ output$mortality_chart <-  renderPlot({
 
     geom_ribbon(aes(x=year, ymin=e_mort_num_lo, ymax=e_mort_num_hi),
                 fill=gtbreport::palette_gtb("mort"),
-                alpha=0.1) +
+                alpha=0.3) +
 
     # Add End TB strategy milestone as dashed line
     geom_hline(mapping=aes(yintercept = mort_milestone, linetype = I(2))) +
@@ -203,7 +55,7 @@ output$mortality_chart <-  renderPlot({
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 2. Incidence and notification 2000 - latest year
+# 2. Incidence and notification 2010 - latest year ----
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -223,7 +75,7 @@ output$incidence_chart <-  renderPlot({
 
     geom_ribbon(mapping=aes(x=year, ymin=e_inc_100k_lo, ymax=e_inc_100k_hi),
                 fill=gtbreport::palette_gtb("inc"),
-                alpha=0.1) +
+                alpha=0.3) +
 
     geom_line(mapping=aes(x=year, y=e_inc_100k, colour="TB incidence"),
               linewidth=3) +
@@ -241,7 +93,8 @@ output$incidence_chart <-  renderPlot({
               na.rm = TRUE) +
 
     scale_color_manual(values = c('TB incidence' = gtbreport::palette_gtb("inc"),
-                                  'People notified with TB' = '#000000')) +
+                                  'People notified with TB' = '#000000'),
+                       aesthetics = "colour") +
 
     scale_x_continuous(name=element_blank(), breaks = c(2010, 2015, 2020, dcyear-1)) +
 
@@ -262,7 +115,7 @@ output$incidence_chart <-  renderPlot({
 })
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 3. Attributable cases - latest year
+# 3. Attributable cases - latest year ----
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -325,7 +178,7 @@ output$rf_chart <-  renderPlot({
 })
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 4. Treatment success rate - latest year
+# 4. Treatment success rate - latest year ----
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 output$tsr_chart <-  renderPlot({
@@ -368,7 +221,7 @@ output$tsr_chart <-  renderPlot({
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 5. TPT provision 2015 - latest year
+# 5. TPT provision 2015 - latest year ----
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -427,7 +280,7 @@ output$tpt_chart <- renderPlot({
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 6. Budget most recent 5 years
+# 6. Budget most recent 5 years ----
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 output$funding_chart <-  renderPlot({
