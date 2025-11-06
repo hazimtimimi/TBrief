@@ -8,7 +8,7 @@
 #                     data collection form and for which disaggregated estimates are not produced.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-app_version <- "Version 3.0"
+app_version <- "Version 3.1"
 
 library(shiny)
 library(shinydashboard)

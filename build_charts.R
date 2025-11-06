@@ -14,7 +14,8 @@
 output$mortality_chart <-  renderPlot({
 
   # Make sure there are data to plot
-  req(pdata()$epi_timeseries)
+  req(is.data.frame(pdata()$epi_timeseries))
+  req(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"])
 
   # Calculate the End TB strategy milestone of total deaths reduction compared to 2015
   mort_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_mort_num"] * mort_milestone_vs_2015
@@ -62,7 +63,8 @@ output$mortality_chart <-  renderPlot({
 output$incidence_chart <-  renderPlot({
 
   # Make sure there are data to plot
-  req(pdata()$epi_timeseries)
+  req(is.data.frame(pdata()$epi_timeseries))
+  req(pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"])
 
   # Calculate the End TB strategy milestone of incidence reduction compared to 2015
   inc_milestone <- pdata()$epi_timeseries[pdata()$epi_timeseries$year == 2015, "e_inc_100k"] * inc_milestone_vs_2015
@@ -228,7 +230,7 @@ output$tsr_chart <-  renderPlot({
 output$tpt_chart <- renderPlot({
 
   # Make sure there are data to plot
-  req(pdata()$tpt_timeseries)
+  req(is.data.frame(pdata()$tpt_timeseries))
 
   #Make sure there are some non-null values in the dataframe
   req(sum(!is.na(pdata()$tpt_timeseries$hiv)) +
@@ -285,7 +287,7 @@ output$tpt_chart <- renderPlot({
 
 output$funding_chart <-  renderPlot({
   # Make sure there are data to plot
-  req(pdata()$funding_timeseries)
+  req(is.data.frame(pdata()$funding_timeseries))
 
   # First make sure there are some data to display
   # There will only be the year column if no data, so check number of columns
